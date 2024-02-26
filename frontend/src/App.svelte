@@ -1,5 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { labelFormats } from "./companies";
+    import LabelForm from "./components/LabelForm.svelte";
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
@@ -36,7 +38,11 @@
     });
 </script>
 
-<main></main>
+<main>
+    {#each labelFormats as labelFormat}
+        <LabelForm {labelFormat} />
+    {/each}
+</main>
 
 <style>
 </style>
