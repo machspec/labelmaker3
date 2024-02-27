@@ -6,6 +6,7 @@
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
+    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";
 
     interface AppState {
         app_title?: string;
@@ -18,6 +19,8 @@
     let state: AppState = {
         loading: true,
     };
+
+    let active: number | null = null;
 
     onMount(async () => {
         fetch("/api/state")
@@ -37,20 +40,33 @@
                 state.loading = false;
             });
     });
+
+    const displayForm = (index: number) => {
+        active = index;
+    };
 </script>
 
 <main>
     <FormatSelector>
-        <ul>
-            {#each labelFormats as labelFormat}
-                <li>{labelFormat.company}</li>
-            {/each}
-        </ul>
+        {#each labelFormats as labelFormat, i}
+            <!-- TODO: Fix these -->
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+            <h2 data-item={i} on:click={() => displayForm(i)}>
+                {labelFormat.company}
+            </h2>
+        {/each}
     </FormatSelector>
 
     <div class="form-container">
-        {#each labelFormats as labelFormat}
-            <LabelForm {labelFormat} />
+        {#if active === null}
+            <h2>{NO_FORMAT_SELECTED_MESSAGE}</h2>
+        {/if}
+
+        {#each labelFormats as labelFormat, itemIndex}
+            <div class:active={itemIndex === active}>
+                <LabelForm {labelFormat} />
+            </div>
         {/each}
     </div>
 </main>
@@ -59,5 +75,21 @@
     main {
         display: grid;
         grid-template-columns: 300px 2fr;
+    }
+
+    .form-container div {
+        display: none;
+    }
+
+    .form-container div.active {
+        display: block;
+    }
+
+    .form-container h2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 100%;
     }
 </style>
