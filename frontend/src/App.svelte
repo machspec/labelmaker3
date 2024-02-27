@@ -20,7 +20,7 @@
         loading: true,
     };
 
-    let active: HTMLElement | null;
+    let active: number | null = null;
 
     onMount(async () => {
         fetch("/api/state")
@@ -42,17 +42,7 @@
     });
 
     const displayForm = (index: number) => {
-        const formContainer = document.querySelector(".form-container")!;
-        const forms = formContainer.querySelectorAll("div");
-
-        forms.forEach((e) => {
-            if (e.dataset.item === `${index}`) {
-                e.classList.add("active");
-                active = e;
-            } else {
-                e.classList.remove("active");
-            }
-        });
+        active = index;
     };
 </script>
 
@@ -69,12 +59,14 @@
     </FormatSelector>
 
     <div class="form-container">
-        {#if !active}
+        {#if active === null}
             <h2>{NO_FORMAT_SELECTED_MESSAGE}</h2>
         {/if}
 
         {#each labelFormats as labelFormat, itemIndex}
-            <LabelForm {labelFormat} {itemIndex} />
+            <div class:active={itemIndex === active}>
+                <LabelForm {labelFormat} />
+            </div>
         {/each}
     </div>
 </main>
@@ -85,7 +77,11 @@
         grid-template-columns: 300px 2fr;
     }
 
-    .form-container :global(.active) {
+    .form-container div {
+        display: none;
+    }
+
+    .form-container div.active {
         display: block;
     }
 

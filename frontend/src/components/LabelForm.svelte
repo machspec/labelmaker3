@@ -1,31 +1,24 @@
 <script lang="ts">
     import SerialNumberInput from "./SerialNumberInput.svelte";
     export let labelFormat: { [key: string]: any };
-    export let itemIndex: number;
 </script>
 
-<div data-item={itemIndex}>
-    <form action="">
-        <fieldset>
-            <legend>{labelFormat.company}</legend>
+<form action="">
+    <fieldset>
+        <legend>{labelFormat.company}</legend>
 
-            {#each labelFormat.fields as field}
-                <label for="field">{field}:</label>
-                <input type="text" id="field" name="field" />
-            {/each}
+        {#each labelFormat.fields as field}
+            <label for="field">{field}:</label>
+            <input type="text" id="field" name="field" />
+        {/each}
 
-            <button type="submit">Print</button>
-        </fieldset>
+        <button type="submit">Print</button>
+    </fieldset>
 
-        <SerialNumberInput />
-    </form>
-</div>
+    <SerialNumberInput />
+</form>
 
 <style>
-    div {
-        display: none;
-    }
-
     fieldset {
         display: grid;
         grid-template-columns: auto 1fr;
