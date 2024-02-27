@@ -6,8 +6,7 @@
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
-
-    let active: HTMLElement | null;
+    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";
 
     interface AppState {
         app_title?: string;
@@ -20,6 +19,8 @@
     let state: AppState = {
         loading: true,
     };
+
+    let active: HTMLElement | null;
 
     onMount(async () => {
         fetch("/api/state")
@@ -45,7 +46,7 @@
         const forms = formContainer.querySelectorAll("div");
 
         forms.forEach((e) => {
-            if (e.dataset.item === index.toString()) {
+            if (e.dataset.item === `${index}`) {
                 e.classList.add("active");
                 active = e;
             } else {
@@ -58,6 +59,7 @@
 <main>
     <FormatSelector>
         {#each labelFormats as labelFormat, i}
+            <!-- TODO: Fix these -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
             <h2 data-item={i} on:click={() => displayForm(i)}>
@@ -68,7 +70,7 @@
 
     <div class="form-container">
         {#if !active}
-            <h2>No label format selected.</h2>
+            <h2>{NO_FORMAT_SELECTED_MESSAGE}</h2>
         {/if}
 
         {#each labelFormats as labelFormat, itemIndex}
