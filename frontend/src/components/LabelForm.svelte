@@ -1,55 +1,65 @@
 <script lang="ts">
-    import SerialNumberInput from "./SerialNumberInput.svelte";
     export let labelFormat: { [key: string]: any };
 </script>
 
+<h1>{labelFormat.company}</h1>
+
 <form action="">
     <fieldset>
-        <legend>{labelFormat.company}</legend>
-
+        <legend>Label Fields</legend>
         {#each labelFormat.fields as field}
-            <label for="field">{field}:</label>
+            <label for="field">{field}</label>
             <input type="text" id="field" name="field" />
         {/each}
-
-        <button type="submit">Print</button>
     </fieldset>
-
-    <SerialNumberInput />
 </form>
 
+<hr />
+
 <style>
+    :root {
+        --bd: solid 1px var(--text-muted, #fff8);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
     fieldset {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 0.5rem;
+        align-items: center;
+        gap: 1rem;
 
-        padding: 1rem;
-        width: 300px;
-    }
-
-    fieldset > button {
-        grid-column: 1/-1;
-        margin-top: 0.5rem;
+        font-size: 1.5rem;
+        border: none;
     }
 
     fieldset > label {
+        padding-left: 1rem;
         text-align: right;
         white-space: nowrap;
     }
 
     fieldset > legend {
-        margin: 0 auto;
+        margin: 0 auto 1rem;
         padding: 0 0.5rem;
         font-size: 1.5rem;
     }
 
-    form {
-        display: grid;
-        grid-template-columns: 300px 300px;
+    h1 {
+        padding-bottom: 0.75rem;
+        width: 100%;
+        text-align: center;
+        border-bottom: var(--bd);
     }
 
-    :global(.sn-input) {
-        margin-top: 0.5rem;
+    hr {
+        display: block;
+        width: 100%;
+        border-top: var(--bd);
+        border-bottom: none;
     }
 </style>

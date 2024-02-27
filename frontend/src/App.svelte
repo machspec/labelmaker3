@@ -3,6 +3,7 @@
     import { labelFormats } from "./companies";
     import LabelForm from "./components/LabelForm.svelte";
     import FormatSelector from "./components/FormatSelector.svelte";
+    import SerialNumberInput from "./components/SerialNumberInput.svelte";
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
@@ -20,7 +21,8 @@
         loading: true,
     };
 
-    let active: number | null = null;
+    // let active: number | null = null;
+    let active: number | null = 0;
 
     onMount(async () => {
         fetch("/api/state")
@@ -66,6 +68,7 @@
         {#each labelFormats as labelFormat, itemIndex}
             <div class:active={itemIndex === active}>
                 <LabelForm {labelFormat} />
+                <SerialNumberInput />
             </div>
         {/each}
     </div>
@@ -82,7 +85,13 @@
     }
 
     .form-container div.active {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        padding: 1rem;
+        height: 100vh;
     }
 
     .form-container h2 {
@@ -91,5 +100,24 @@
         align-items: center;
 
         height: 100%;
+    }
+
+    :global(button) {
+        border: none;
+        background-color: var(--button-bg, #111);
+        color: var(--text);
+        font-size: 1rem;
+        cursor: pointer;
+    }
+    :global(button:hover) {
+        background-color: var(--button-bg-hover, #333);
+    }
+
+    :global(h1) {
+        font-size: 2.5rem;
+    }
+
+    :global(input) {
+        font-size: 1.25rem;
     }
 </style>
