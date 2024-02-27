@@ -4,4 +4,25 @@
     <slot />
 </div>
 
-<style></style>
+<style>
+    .wrapper {
+        display: grid;
+        grid-template-rows: repeat(auto-fit, minmax(2rem, 1fr));
+        padding: 1rem 0;
+        height: 100vh;
+        background: var(--selector-bg, #000);
+        overflow-y: auto;
+    }
+
+    .wrapper :global(*) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .wrapper :global(*):hover {
+        background-color: var(--selector-hover, #fff4);
+    }
+</style>

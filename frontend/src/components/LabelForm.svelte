@@ -1,9 +1,10 @@
 <script lang="ts">
     import SerialNumberInput from "./SerialNumberInput.svelte";
     export let labelFormat: { [key: string]: any };
+    export let itemIndex: number;
 </script>
 
-<div>
+<div data-item={itemIndex}>
     <form action="">
         <fieldset>
             <legend>{labelFormat.company}</legend>
@@ -21,6 +22,10 @@
 </div>
 
 <style>
+    div {
+        display: none;
+    }
+
     fieldset {
         display: grid;
         grid-template-columns: auto 1fr;

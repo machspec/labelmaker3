@@ -7,6 +7,8 @@
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
 
+    let active: HTMLElement | null;
+
     interface AppState {
         app_title?: string;
         app_version?: string;
@@ -37,20 +39,40 @@
                 state.loading = false;
             });
     });
+
+    const displayForm = (index: number) => {
+        const formContainer = document.querySelector(".form-container")!;
+        const forms = formContainer.querySelectorAll("div");
+
+        forms.forEach((e) => {
+            if (e.dataset.item === index.toString()) {
+                e.classList.add("active");
+                active = e;
+            } else {
+                e.classList.remove("active");
+            }
+        });
+    };
 </script>
 
 <main>
     <FormatSelector>
-        <ul>
-            {#each labelFormats as labelFormat}
-                <li>{labelFormat.company}</li>
-            {/each}
-        </ul>
+        {#each labelFormats as labelFormat, i}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+            <h2 data-item={i} on:click={() => displayForm(i)}>
+                {labelFormat.company}
+            </h2>
+        {/each}
     </FormatSelector>
 
     <div class="form-container">
-        {#each labelFormats as labelFormat}
-            <LabelForm {labelFormat} />
+        {#if !active}
+            <h2>No label format selected.</h2>
+        {/if}
+
+        {#each labelFormats as labelFormat, itemIndex}
+            <LabelForm {labelFormat} {itemIndex} />
         {/each}
     </div>
 </main>
@@ -59,5 +81,17 @@
     main {
         display: grid;
         grid-template-columns: 300px 2fr;
+    }
+
+    .form-container :global(.active) {
+        display: block;
+    }
+
+    .form-container h2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 100%;
     }
 </style>
