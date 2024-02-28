@@ -21,7 +21,8 @@
         loading: true,
     };
 
-    let active: number | null = null;
+    // Set to `null` in production.
+    let active: number | null = 0;
 
     onMount(async () => {
         fetch("/api/state")
