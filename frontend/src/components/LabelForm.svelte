@@ -2,23 +2,25 @@
     export let labelFormat: { [key: string]: any };
 </script>
 
-<h1>{labelFormat.company}</h1>
+<span class="container">
+    <h1>{labelFormat.company}</h1>
 
-<form action="">
-    <fieldset>
-        <legend>Label Fields</legend>
-        {#each labelFormat.fields as field}
-            <label for="field">{field}</label>
-            <input type="text" id="field" name="field" />
-        {/each}
-    </fieldset>
-</form>
-
-<hr />
+    <form action="">
+        <fieldset>
+            <legend>Label Fields</legend>
+            {#each labelFormat.fields as field}
+                <label for="field">{field}</label>
+                <input type="text" id="field" name="field" />
+            {/each}
+        </fieldset>
+    </form>
+</span>
 
 <style>
-    :root {
-        --bd: solid 1px var(--text-muted, #fff8);
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 
     form {
@@ -33,8 +35,16 @@
         align-items: center;
         gap: 1rem;
 
+        margin: 0 auto;
+        width: 50%;
         font-size: 1.5rem;
         border: none;
+    }
+
+    fieldset > input {
+        max-width: 600px;
+        min-width: 300px;
+        width: 100%;
     }
 
     fieldset > label {
@@ -54,12 +64,5 @@
         width: 100%;
         text-align: center;
         border-bottom: var(--bd);
-    }
-
-    hr {
-        display: block;
-        width: 100%;
-        border-top: var(--bd);
-        border-bottom: none;
     }
 </style>

@@ -21,8 +21,7 @@
         loading: true,
     };
 
-    // let active: number | null = null;
-    let active: number | null = 0;
+    let active: number | null = null;
 
     onMount(async () => {
         fetch("/api/state")
@@ -62,15 +61,18 @@
 
     <div class="form-container">
         {#if active === null}
-            <h2>{NO_FORMAT_SELECTED_MESSAGE}</h2>
+            <h2 class="hero">{NO_FORMAT_SELECTED_MESSAGE}</h2>
         {/if}
 
         {#each labelFormats as labelFormat, itemIndex}
             <div class:active={itemIndex === active}>
                 <LabelForm {labelFormat} />
-                <SerialNumberInput />
             </div>
         {/each}
+
+        {#if active !== null}
+            <SerialNumberInput />
+        {/if}
     </div>
 </main>
 
@@ -80,37 +82,46 @@
         grid-template-columns: 300px 2fr;
     }
 
+    .form-container {
+        position: relative;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        padding: 1rem;
+        height: 100vh;
+    }
+
     .form-container div {
         display: none;
     }
 
     .form-container div.active {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-
-        padding: 1rem;
-        height: 100vh;
+        display: block;
     }
 
     .form-container h2 {
         display: flex;
         justify-content: center;
         align-items: center;
-
         height: 100%;
+    }
+
+    .hero {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     :global(button) {
         border: none;
-        background-color: var(--button-bg, #111);
+        background-color: var(--accent);
         color: var(--text);
         font-size: 1rem;
         cursor: pointer;
     }
+
     :global(button:hover) {
-        background-color: var(--button-bg-hover, #333);
+        background-color: var(--accent-hover);
     }
 
     :global(h1) {
