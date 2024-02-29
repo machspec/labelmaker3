@@ -1,14 +1,25 @@
 <script lang="ts">
     import { writable } from "svelte/store";
 
+    let serialNumberDisplay: HTMLElement;
     let serialNumber = "";
+
     const serialNumberList = writable<string[]>([]);
     const lastSerialNumber = () => $serialNumberList.at(-1);
 
     const addSN = (input: string = serialNumber, clear = true) => {
         if (input === "") return;
+        if ($serialNumberList.includes(input)) return;
 
         serialNumberList.update((list) => [...list, input]);
+
+        setTimeout(
+            () =>
+                (serialNumberDisplay.scrollLeft =
+                    serialNumberDisplay.scrollWidth),
+            0,
+        );
+
         if (clear) serialNumber = "";
     };
 
@@ -20,10 +31,11 @@
         if (!match) return;
 
         const [_, prefix, num] = match;
-        const incremented = parseInt(num, 10) + 1;
-        const newSerialNumber = `${prefix}${incremented}`;
+        const incremented = (parseInt(num, 10) + 1)
+            .toString()
+            .padStart(num.length, "0");
 
-        return newSerialNumber;
+        return `${prefix}${incremented}`;
     };
 
     /** Remove a serial number given its index */
@@ -33,6 +45,8 @@
             return list;
         });
     };
+
+    addSN("SN-0001", false);
 </script>
 
 <span class="container">
@@ -42,12 +56,24 @@
     </span>
 
     <div>
-        <input type="text" bind:value={serialNumber} />
+        <input
+            type="text"
+            bind:value={serialNumber}
+            on:keydown={(e) => {
+                if (e.key === "Enter") {
+                    if (e.shiftKey) {
+                        addSN(incrementSN(), false);
+                    } else {
+                        addSN();
+                    }
+                }
+            }}
+        />
         <button on:click={() => addSN()}>Add</button>
         <button on:click={() => addSN(incrementSN(), false)}>Increment</button>
     </div>
 
-    <ul class="serial-number-list">
+    <ul class="serial-number-list" bind:this={serialNumberDisplay}>
         {#each $serialNumberList as sn, index}
             <li class="serial-number">
                 <p>{sn}</p>
@@ -59,26 +85,63 @@
 
 <style>
     .container {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         gap: 1rem;
         padding: 1rem;
-        border-top: var(--bd);
-    }
 
-    .serial-number {
-        display: flex;
+        /*
+        
+        `min-width: 0` is required to prevent another class `.serial-number-list` from
+        expanding beyond the container's width (enabling it to scroll horizontally).
+
+        This is because the container of THIS class is a grid container, which cannot
+        contain items exceeding its own size, therefore the default values for `min-width`
+        and `min-height` are `auto`, which is undesired in this case.
+
+        A full explanation can be found here:
+        https://stackoverflow.com/questions/61959291/how-to-get-scrolling-in-a-css-grid
+
+        */
+
+        min-width: 0;
+
+        border-top: var(--bd);
     }
 
     .serial-number-list {
         display: grid;
-        grid-template-rows: repeat(3, auto);
-        grid-template-columns: repeat(auto-fill, 1fr);
-        gap: 0.5rem 1rem;
+        grid-auto-flow: column;
+        grid-template-rows: repeat(7, auto);
+        gap: 0.25rem 1rem;
+
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        border: var(--bd);
 
         list-style-type: none;
+    }
+
+    .serial-number {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: center;
+    }
+
+    .serial-number button {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .serial-number p {
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        height: 100%;
+        background-color: #fff3;
     }
 
     div {
