@@ -1,7 +1,9 @@
 <script lang="ts">
     import { writable } from "svelte/store";
 
-    let serialNumberDisplay: HTMLElement;
+    let serialNumberDisplay: HTMLUListElement;
+    let snEditor: HTMLInputElement;
+    let editIndex: number | null = null;
     let serialNumber = "";
 
     const serialNumberList = writable<string[]>([]);
@@ -21,6 +23,18 @@
         );
 
         if (clear) serialNumber = "";
+    };
+
+    const editSN = (index: number, value: string | null) => {
+        if (value === null) return;
+        if ($serialNumberList.includes(value)) return;
+
+        serialNumberList.update((list) => {
+            list[index] = value;
+            return list;
+        });
+
+        editIndex = null;
     };
 
     const incrementSN = (input: string | undefined = lastSerialNumber()) => {
@@ -45,8 +59,6 @@
             return list;
         });
     };
-
-    addSN("SN-0001", false);
 </script>
 
 <span class="container">
@@ -76,7 +88,29 @@
     <ul class="serial-number-list" bind:this={serialNumberDisplay}>
         {#each $serialNumberList as sn, index}
             <li class="serial-number">
-                <p>{sn}</p>
+                {#if editIndex === index}
+                    <input
+                        type="text"
+                        contenteditable="true"
+                        value={sn}
+                        bind:this={snEditor}
+                        on:keydown={(e) => {
+                            if (e.key === "Enter") {
+                                if (snEditor.value === sn) editIndex = null;
+                                editSN(index, snEditor.value);
+                            }
+                        }}
+                    />
+                {:else}
+                    <p
+                        on:dblclick={() => {
+                            editIndex = index;
+                        }}
+                    >
+                        {sn}
+                    </p>
+                {/if}
+
                 <button on:click={() => removeSN(index)}>Remove</button>
             </li>
         {/each}
@@ -118,10 +152,8 @@
         grid-template-rows: repeat(7, auto);
         gap: 0.25rem 1rem;
 
-        width: 100%;
         max-width: 100%;
         overflow-x: auto;
-        border: var(--bd);
 
         list-style-type: none;
     }
@@ -136,6 +168,7 @@
         padding: 0.25rem 0.5rem;
     }
 
+    .serial-number input,
     .serial-number p {
         display: flex;
         align-items: center;
