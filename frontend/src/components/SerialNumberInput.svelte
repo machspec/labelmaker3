@@ -175,10 +175,6 @@
         `min-width: 0` is required to prevent another class `.serial-number-display` from
         expanding beyond the container's width (enabling it to scroll horizontally).
 
-        This is because the container of THIS class is a grid container, which cannot
-        contain items exceeding its own size, therefore the default values for `min-width`
-        and `min-height` are `auto`, which is undesired in this case.
-
         A full explanation can be found here:
         https://stackoverflow.com/questions/61959291/how-to-get-scrolling-in-a-css-grid
 
