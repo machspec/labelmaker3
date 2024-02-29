@@ -9,12 +9,21 @@
     const serialNumberList = writable<string[]>([]);
     const lastSerialNumber = () => $serialNumberList.at(-1);
 
+    /**
+     * Add a serial number to the list.
+     * @param input Value to be added to the list.
+     * @param clear Whether to clear the input after adding the value.
+     */
     const addSN = (input: string = serialNumber, clear = true) => {
         if (input === "") return;
+
+        // Prevent duplicates
         if ($serialNumberList.includes(input)) return;
 
         serialNumberList.update((list) => [...list, input]);
 
+        // Delay the scroll to the end of the list to ensure
+        // that the width of the element has been updated.
         setTimeout(
             () =>
                 (serialNumberDisplay.scrollLeft =
@@ -25,8 +34,15 @@
         if (clear) serialNumber = "";
     };
 
+    /**
+     * Edit a serial number given its index.
+     * @param index Index of the serial number to be updated.
+     * @param value New value to be assigned to the serial number.
+     */
     const editSN = (index: number, value: string | null) => {
         if (value === null) return;
+
+        // Prevent duplicates
         if ($serialNumberList.includes(value)) return;
 
         serialNumberList.update((list) => {
@@ -34,12 +50,21 @@
             return list;
         });
 
+        // End the editing operation
         editIndex = null;
     };
 
+    /**
+     * Increment the last serial number in the list.
+     * @param input The last serial number in the list.
+     */
     const incrementSN = (input: string | undefined = lastSerialNumber()) => {
+        // Prevent incrementing an empty list
         if (input === "" || input === undefined) return;
 
+        // Matches the following formats (prefix is optional):
+        // 1. "ABC123" => ["ABC", "123"]
+        // 2. "ABC-123" => ["ABC-", "123"]
         const match = input!.match(/^([a-zA-Z-]*)(\d+$)/);
 
         if (!match) return;
@@ -52,8 +77,13 @@
         return `${prefix}${incremented}`;
     };
 
-    /** Remove a serial number given its index */
+    /**
+     * Remove a serial number from the list.
+     * @param index Index of the serial number to be removed.
+     */
     const removeSN = (index: number) => {
+        // Cancel any editing operations
+        editIndex = null;
         serialNumberList.update((list) => {
             list.splice(index, 1);
             return list;
@@ -67,7 +97,7 @@
         <h3>&lpar;Enter zero or more&rpar;</h3>
     </span>
 
-    <div>
+    <div class="serial-number-input">
         <input
             type="text"
             bind:value={serialNumber}
@@ -81,17 +111,25 @@
                 }
             }}
         />
-        <button on:click={() => addSN()}>Add</button>
-        <button on:click={() => addSN(incrementSN(), false)}>Increment</button>
+
+        <button on:click={() => addSN()} title="Add a Serial Number">
+            Add
+        </button>
+        <button
+            on:click={() => addSN(incrementSN(), false)}
+            title="Increment the previous Serial Number"
+        >
+            Increment
+        </button>
     </div>
 
-    <ul class="serial-number-list" bind:this={serialNumberDisplay}>
+    <ul class="serial-number-display" bind:this={serialNumberDisplay}>
         {#each $serialNumberList as sn, index}
             <li class="serial-number">
                 {#if editIndex === index}
+                    <!-- Individual Serial Number Editor -->
                     <input
                         type="text"
-                        contenteditable="true"
                         value={sn}
                         bind:this={snEditor}
                         on:keydown={(e) => {
@@ -102,7 +140,9 @@
                         }}
                     />
                 {:else}
+                    <!-- Individual Serial Number -->
                     <p
+                        title="Double-click to edit"
                         on:dblclick={() => {
                             editIndex = index;
                         }}
@@ -129,7 +169,7 @@
 
         /*
         
-        `min-width: 0` is required to prevent another class `.serial-number-list` from
+        `min-width: 0` is required to prevent another class `.serial-number-display` from
         expanding beyond the container's width (enabling it to scroll horizontally).
 
         This is because the container of THIS class is a grid container, which cannot
@@ -146,7 +186,7 @@
         border-top: var(--bd);
     }
 
-    .serial-number-list {
+    .serial-number-display {
         display: grid;
         grid-auto-flow: column;
         grid-template-rows: repeat(7, auto);
@@ -174,6 +214,8 @@
         align-items: center;
         padding: 0 0.5rem;
         height: 100%;
+        border: none;
+        color: var(--text);
         background-color: #fff3;
     }
 
@@ -185,7 +227,7 @@
         width: 50%;
     }
 
-    input {
+    .serial-number-input input {
         grid-column: 1/-1;
     }
 
