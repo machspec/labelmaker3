@@ -145,6 +145,9 @@
                         title="Double-click to edit"
                         on:dblclick={() => {
                             editIndex = index;
+
+                            // Focus the input after it has been rendered.
+                            setTimeout(() => snEditor.focus(), 0);
                         }}
                     >
                         {sn}
