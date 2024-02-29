@@ -55,7 +55,6 @@
 
     fieldset > legend {
         margin: 0 auto 1rem;
-        padding: 0 0.5rem;
         font-size: 1.5rem;
     }
 

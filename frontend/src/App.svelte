@@ -85,10 +85,12 @@
 
     .form-container {
         position: relative;
-        display: grid;
-        grid-template-rows: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
         padding: 1rem;
         height: 100vh;
+        overflow-y: auto;
     }
 
     .form-container div {
