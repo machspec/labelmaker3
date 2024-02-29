@@ -65,4 +65,4 @@ export let labelFormats: Array<CompanyLabelFormat> = [
         fields: ["PN", "Rev", "Job#", "SN", "PO/Line"],
         format: "..,.,.,.",
     },
-];
+].sort((a, b) => a.company < b.company ? -1 : 1);

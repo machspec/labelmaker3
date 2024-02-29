@@ -3,6 +3,7 @@
     import { labelFormats } from "./companies";
     import LabelForm from "./components/LabelForm.svelte";
     import FormatSelector from "./components/FormatSelector.svelte";
+    import SerialNumberInput from "./components/SerialNumberInput.svelte";
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
@@ -20,6 +21,7 @@
         loading: true,
     };
 
+    // Set to `null` in production.
     let active: number | null = null;
 
     onMount(async () => {
@@ -60,7 +62,7 @@
 
     <div class="form-container">
         {#if active === null}
-            <h2>{NO_FORMAT_SELECTED_MESSAGE}</h2>
+            <h2 class="hero">{NO_FORMAT_SELECTED_MESSAGE}</h2>
         {/if}
 
         {#each labelFormats as labelFormat, itemIndex}
@@ -68,6 +70,10 @@
                 <LabelForm {labelFormat} />
             </div>
         {/each}
+
+        {#if active !== null}
+            <SerialNumberInput />
+        {/if}
     </div>
 </main>
 
@@ -75,6 +81,16 @@
     main {
         display: grid;
         grid-template-columns: 300px 2fr;
+    }
+
+    .form-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1rem;
+        height: 100vh;
+        overflow-y: auto;
     }
 
     .form-container div {
@@ -89,7 +105,33 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
         height: 100%;
+    }
+
+    .hero {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    :global(button) {
+        border: none;
+        background-color: var(--accent);
+        color: var(--text);
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    :global(button:hover) {
+        background-color: var(--accent-hover);
+    }
+
+    :global(h1) {
+        font-size: 2.5rem;
+    }
+
+    :global(input) {
+        font-size: 1.25rem;
     }
 </style>

@@ -10,7 +10,7 @@
         grid-template-rows: repeat(auto-fit, minmax(2rem, 1fr));
         padding: 1rem 0;
         height: 100vh;
-        background: var(--selector-bg, #000);
+        background: var(--accent);
         overflow-y: auto;
     }
 
@@ -23,6 +23,6 @@
     }
 
     .wrapper :global(*):hover {
-        background-color: var(--selector-hover, #fff4);
+        background-color: var(--accent-hover);
     }
 </style>

@@ -1,55 +1,67 @@
 <script lang="ts">
-    import SerialNumberInput from "./SerialNumberInput.svelte";
     export let labelFormat: { [key: string]: any };
 </script>
 
-<form action="">
-    <fieldset>
-        <legend>{labelFormat.company}</legend>
+<span class="container">
+    <h1>{labelFormat.company}</h1>
 
-        {#each labelFormat.fields as field}
-            <label for="field">{field}:</label>
-            <input type="text" id="field" name="field" />
-        {/each}
-
-        <button type="submit">Print</button>
-    </fieldset>
-
-    <SerialNumberInput />
-</form>
+    <form action="">
+        <fieldset>
+            <legend>Label Fields</legend>
+            {#each labelFormat.fields as field}
+                <label for="field">{field}</label>
+                <input type="text" id="field" name="field" />
+            {/each}
+        </fieldset>
+    </form>
+</span>
 
 <style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
     fieldset {
         display: grid;
         grid-template-columns: auto 1fr;
-        gap: 0.5rem;
+        align-items: center;
+        gap: 1rem;
 
-        padding: 1rem;
-        width: 300px;
+        margin: 0 auto;
+        width: 50%;
+        font-size: 1.5rem;
+        border: none;
     }
 
-    fieldset > button {
-        grid-column: 1/-1;
-        margin-top: 0.5rem;
+    fieldset > input {
+        max-width: 600px;
+        min-width: 300px;
+        width: 100%;
     }
 
     fieldset > label {
+        padding-left: 1rem;
         text-align: right;
         white-space: nowrap;
     }
 
     fieldset > legend {
-        margin: 0 auto;
-        padding: 0 0.5rem;
+        margin: 0 auto 1rem;
         font-size: 1.5rem;
     }
 
-    form {
-        display: grid;
-        grid-template-columns: 300px 300px;
-    }
-
-    :global(.sn-input) {
-        margin-top: 0.5rem;
+    h1 {
+        padding-bottom: 0.75rem;
+        width: 100%;
+        text-align: center;
+        border-bottom: var(--bd);
     }
 </style>
