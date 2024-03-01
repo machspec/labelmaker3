@@ -94,7 +94,7 @@
 <span class="container">
     <span>
         <h1>Serial Numbers</h1>
-        <h3>&lpar;Enter zero or more&rpar;</h3>
+        <h4>&lpar;Enter zero or more&rpar;</h4>
     </span>
 
     <div class="serial-number-input">
@@ -168,7 +168,6 @@
         justify-content: flex-start;
         align-items: center;
         gap: 1rem;
-        padding: 1rem;
 
         /*
         
@@ -181,8 +180,6 @@
         */
 
         min-width: 0;
-
-        border-top: var(--bd);
     }
 
     .serial-number-display {
@@ -195,6 +192,10 @@
         overflow-x: auto;
 
         list-style-type: none;
+    }
+
+    .serial-number-input input {
+        grid-column: 1/-1;
     }
 
     .serial-number {
@@ -226,8 +227,8 @@
         width: 50%;
     }
 
-    .serial-number-input input {
-        grid-column: 1/-1;
+    h1 {
+        font-size: 1.5rem;
     }
 
     span {
