@@ -1,35 +1,30 @@
 <script lang="ts">
-    export let labelFormat: { [key: string]: any };
+    export let format: { [key: string]: any };
+    export let active: boolean = false;
 </script>
 
-<span class="container">
-    <h1>{labelFormat.company}</h1>
-
+<span class="container {active ? 'active' : ''}">
+    <h1>Label Fields</h1>
     <form action="">
-        <fieldset>
-            <legend>Label Fields</legend>
-            {#each labelFormat.fields as field}
-                <label for="field">{field}</label>
-                <input type="text" id="field" name="field" />
-            {/each}
-        </fieldset>
+        {#each format.fields as field}
+            <label for="field">{field}</label>
+            <input type="text" id="field" name="field" />
+        {/each}
     </form>
 </span>
 
 <style>
     .container {
+        display: none;
+    }
+
+    .active {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
     form {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    fieldset {
         display: grid;
         grid-template-columns: auto 1fr;
         align-items: center;
@@ -41,27 +36,21 @@
         border: none;
     }
 
-    fieldset > input {
+    form > input {
         max-width: 600px;
         min-width: 300px;
         width: 100%;
     }
 
-    fieldset > label {
+    form > label {
         padding-left: 1rem;
         text-align: right;
         white-space: nowrap;
     }
 
-    fieldset > legend {
-        margin: 0 auto 1rem;
-        font-size: 1.5rem;
-    }
-
     h1 {
-        padding-bottom: 0.75rem;
         width: 100%;
+        font-size: 1.5rem;
         text-align: center;
-        border-bottom: var(--bd);
     }
 </style>

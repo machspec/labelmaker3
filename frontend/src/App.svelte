@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
+    import Header from "./components/Header.svelte";
     import LabelForm from "./components/LabelForm.svelte";
     import FormatSelector from "./components/FormatSelector.svelte";
     import SerialNumberInput from "./components/SerialNumberInput.svelte";
@@ -48,27 +49,31 @@
     };
 </script>
 
+<Header {state} />
+
 <main>
     <FormatSelector>
         {#each labelFormats as labelFormat, i}
             <!-- TODO: Fix these -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-            <h2 data-item={i} on:click={() => displayForm(i)}>
+            <h2
+                data-item={i}
+                on:click={() => displayForm(i)}
+                class={active === i ? "active" : ""}
+            >
                 {labelFormat.company}
             </h2>
         {/each}
     </FormatSelector>
 
-    <div class="form-container">
+    <div class="container">
         {#if active === null}
             <h2 class="hero">{NO_FORMAT_SELECTED_MESSAGE}</h2>
         {/if}
 
-        {#each labelFormats as labelFormat, itemIndex}
-            <div class:active={itemIndex === active}>
-                <LabelForm {labelFormat} />
-            </div>
+        {#each labelFormats as format, itemIndex}
+            <LabelForm {format} active={itemIndex === active} />
         {/each}
 
         {#if active !== null}
@@ -81,27 +86,22 @@
     main {
         display: grid;
         grid-template-columns: 300px 2fr;
-    }
-
-    .form-container {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1rem;
-        height: 100vh;
+        height: calc(100vh - var(--header-height));
         overflow-y: auto;
     }
 
-    .form-container div {
-        display: none;
+    .container {
+        position: relative;
+        display: grid;
+        grid-template-rows: auto 24rem;
+        overflow-y: auto;
     }
 
-    .form-container div.active {
-        display: block;
+    .container > :global(span) {
+        padding: 1rem;
     }
 
-    .form-container h2 {
+    .container h2 {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,12 +115,16 @@
         transform: translate(-50%, -50%);
     }
 
+    .container > :global(.active) {
+        border-bottom: var(--bd);
+    }
+
     :global(button) {
         border: none;
-        background-color: var(--accent);
         color: var(--text);
         font-size: 1rem;
         cursor: pointer;
+        background-color: var(--accent);
     }
 
     :global(button:hover) {

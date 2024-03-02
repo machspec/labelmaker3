@@ -3,11 +3,10 @@
 @media (prefers-color-scheme: light) {
     :root {
         --background: #eee;
-        --accent: #6cf;
-        --accent-hover: #2ad;
+        --accent: #abf;
+        --accent-hover: #cdf;
         --text: #111;
-        --text-muted: #444;
-        --bd: solid 1px var(--text-muted);
+        --text-muted: #0002;
     }
 }
 
@@ -17,9 +16,13 @@
         --accent: #111;
         --accent-hover: #444;
         --text: #eee;
-        --text-muted: #aaa;
-        --bd: solid 1px var(--text-muted);
+        --text-muted: #fff2;
     }
+}
+
+:root {
+    --header-height: 4rem;
+    --bd: solid 1px var(--text-muted);
 }
 
 * {
@@ -42,4 +45,9 @@ a:visited {
 html {
     color: var(--text);
     background-color: var(--background);
+}
+
+#app {
+    display: grid;
+    grid-template-rows: var(--header-height) 1fr;
 }
