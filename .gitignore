@@ -1,2 +1,4 @@
 .env
 .vscode/settings.json
+backend/pdf
+backend/python_app/utils/__pycache__

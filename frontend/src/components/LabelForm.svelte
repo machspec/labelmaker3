@@ -1,15 +1,45 @@
 <script lang="ts">
     export let format: { [key: string]: any };
     export let active: boolean = false;
+
+    let values: any[] = [];
+
+    function print() {
+        console.log(values);
+
+        const params = new URLSearchParams();
+
+        for (let i = 0; i < format.fields.length; i++) {
+            params.append(format.fields[i].toUpperCase(), values[i]);
+        }
+
+        fetch("api/print_label", {
+            method: "POST",
+            body: params.toString(),
+        })
+            .then((response) => response.text())
+            .then((text) => console.log(text));
+    }
+
+    function setupValues() {
+        values = Array(format.fields.length).fill("");
+    }
+
+    $: {
+        if (format.fields.length > 0) {
+            setupValues();
+        }
+    }
 </script>
 
 <span class="container {active ? 'active' : ''}">
     <h1>Label Fields</h1>
     <form action="">
-        {#each format.fields as field}
+        {#each format.fields as field, i}
             <label for="field">{field}</label>
-            <input type="text" id="field" name="field" />
+            <input type="text" id="field" name="field" bind:value={values[i]} />
         {/each}
+        <button type="button" on:click={print}>Print</button>
     </form>
 </span>
 
