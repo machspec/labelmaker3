@@ -1,14 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
+    import FormatSelector from "./components/FormatSelector.svelte";
     import Header from "./components/Header.svelte";
     import LabelForm from "./components/LabelForm.svelte";
-    import FormatSelector from "./components/FormatSelector.svelte";
+    import PrintingOptions from "./components/PrintingOptions.svelte";
     import SerialNumberInput from "./components/SerialNumberInput.svelte";
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
-    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";    
+    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";
 
     interface AppState {
         app_title?: string;
@@ -23,7 +24,7 @@
     };
 
     // Set to `null` in production.
-    let active: number | null = null;
+    let active: number | null = 0;
 
     onMount(async () => {
         fetch("/api/state")
@@ -78,6 +79,7 @@
 
         {#if active !== null}
             <SerialNumberInput />
+            <PrintingOptions />
         {/if}
     </div>
 </main>
@@ -93,7 +95,7 @@
     .container {
         position: relative;
         display: grid;
-        grid-template-rows: auto 24rem;
+        grid-template-rows: auto 24rem 3rem;
         overflow-y: auto;
     }
 
