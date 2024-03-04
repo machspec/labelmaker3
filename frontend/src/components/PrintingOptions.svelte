@@ -12,47 +12,46 @@
 
 <div class="container">
     <form action="" on:submit|preventDefault={handleSubmit}>
-        <span>
-            <input
-                name="print-duplicates"
-                type="checkbox"
-                bind:checked={printDuplicates}
-            />
-            <label for="print-duplicates">Print Duplicates</label>
-
-            {#if printDuplicates}
-                <label for="duplicate-amount">&lpar;Amount&rpar;</label>
+        <fieldset>
+            <span>
                 <input
-                    type="number"
-                    id="duplicate-amount"
-                    name="duplicate-amount"
-                    title="Print {duplicateAmount} duplicate(s) of each label"
-                    min="0"
-                    bind:value={duplicateAmount}
+                    name="print-duplicates"
+                    type="checkbox"
+                    bind:checked={printDuplicates}
                 />
-            {/if}
-        </span>
-
-        <span>
-            <input
-                type="checkbox"
-                name="specify-qty"
-                id="specify-qty"
-                bind:checked={specifyQty}
-            />
-            <label for="qty">Specify QTY</label>
-
-            {#if specifyQty}
+                <label for="print-duplicates">Print Duplicates</label>
+                {#if printDuplicates}
+                    <label for="duplicate-amount">&lpar;Amount&rpar;</label>
+                    <input
+                        type="number"
+                        id="duplicate-amount"
+                        name="duplicate-amount"
+                        title="Print {duplicateAmount} duplicate(s) of each label"
+                        min="0"
+                        bind:value={duplicateAmount}
+                    />
+                {/if}
+            </span>
+            <span>
                 <input
-                    type="number"
-                    id="qty"
-                    name="qty"
-                    title="Adds &quot;QTY: {specifiedQty}&quot; to the label"
-                    min="1"
-                    bind:value={specifiedQty}
+                    type="checkbox"
+                    name="specify-qty"
+                    id="specify-qty"
+                    bind:checked={specifyQty}
                 />
-            {/if}
-        </span>
+                <label for="qty">Specify QTY</label>
+                {#if specifyQty}
+                    <input
+                        type="number"
+                        id="qty"
+                        name="qty"
+                        title="Adds &quot;QTY: {specifiedQty}&quot; to the label"
+                        min="1"
+                        bind:value={specifiedQty}
+                    />
+                {/if}
+            </span>
+        </fieldset>
 
         <button type="submit">Print</button>
     </form>
@@ -60,9 +59,14 @@
 
 <style>
     .container {
+        position: fixed;
+        bottom: 0;
+        width: calc(100vw - var(--selector-width));
+
         display: grid;
         align-items: center;
-        padding: 0 2rem;
+        padding: 0.5rem;
+        padding-right: 1rem;
         background-color: var(--accent);
     }
 
@@ -75,10 +79,23 @@
         background-color: var(--accent-hover);
     }
 
+    fieldset {
+        border: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
     form {
         display: grid;
-        grid-template-columns: auto auto 1fr auto;
+        grid-template-columns: 1fr auto;
         gap: 2rem;
+        align-items: center;
+    }
+
+    span {
+        display: flex;
+        flex-wrap: nowrap;
         align-items: center;
     }
 
@@ -89,5 +106,6 @@
 
     label {
         margin: 0 0.5rem;
+        white-space: nowrap;
     }
 </style>

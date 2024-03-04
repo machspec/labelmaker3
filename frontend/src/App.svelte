@@ -87,15 +87,16 @@
 <style>
     main {
         display: grid;
-        grid-template-columns: 300px 2fr;
+        grid-template-columns: var(--selector-width) 2fr;
         height: calc(100vh - var(--header-height));
+        width: 100%;
         overflow-y: auto;
     }
 
     .container {
         position: relative;
         display: grid;
-        grid-template-rows: auto 24rem 3rem;
+        grid-template-rows: auto 24rem;
         overflow-y: auto;
     }
 
