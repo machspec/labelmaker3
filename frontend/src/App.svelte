@@ -8,7 +8,7 @@
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
-    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";
+    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";    
 
     interface AppState {
         app_title?: string;
