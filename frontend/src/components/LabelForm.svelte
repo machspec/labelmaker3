@@ -6,9 +6,11 @@
 <span class="container {active ? 'active' : ''}">
     <h1>Label Fields</h1>
     <form action="">
-        {#each format.fields as field}
-            <label for="field">{field}</label>
-            <input type="text" id="field" name="field" />
+        {#each format.rows as row}
+            {#each row as field}
+                <label for="field">{field}</label>
+                <input type="text" id={field} name={field} />
+            {/each}
         {/each}
     </form>
 </span>

@@ -1,68 +1,55 @@
 interface CompanyLabelFormat {
     company: string;
-    fields: string[];
-    format: string;
+    rows: string[][];
 }
 
 export let labelFormats: Array<CompanyLabelFormat> = [
     {
         company: "Bell/ITT",
-        fields: ["PN", "Rev", "DOM", "Job#", "P Date", "P Code", "Class"],
-        format: "..,..,..,.",
+        rows: [["PN", "Rev"], ["DOM", "Job#"], ["P Date", "P Code"], ["Class"]],
     },
     {
         company: "Kidde",
-        fields: ["PN", "Rev", "DOM", "Job#"],
-        format: "..,..",
+        rows: [["PN", "Rev"], ["DOM", "Job#"]],
     },
     {
         company: "Ontic",
-        fields: ["PN", "Rev", "Job#"],
-        format: "..,.",
+        rows: [["PN", "Rev"], ["Job#"]],
     },
     {
         company: "Biomet",
-        fields: ["PN", "Rev"],
-        format: ".,.",
+        rows: [["PN"], ["Rev"]],
     },
     {
         company: "Linvatec",
-        fields: ["PN", "Rev"],
-        format: ".,.",
+        rows: [["PN"], ["Rev"]],
     },
     {
         company: "Purolator",
-        fields: ["PN", "Rev"],
-        format: ".,.",
+        rows: [["PN"], ["Rev"]],
     },
     {
         company: "Curtiss Wright",
-        fields: ["PN"],
-        format: ".",
+        rows: [["PN"]],
     },
     {
         company: "Lord",
-        fields: ["PN", "Class"],
-        format: ".,.",
+        rows: [["PN"], ["Class"]],
     },
     {
         company: "Sierra Nevada",
-        fields: ["PN", "Rev", "Job#", "Thread Insp."],
-        format: "..,.,.",
+        rows: [["PN", "Rev"], ["Job#"], ["Thread Insp."]],
     },
     {
         company: "Dover",
-        fields: ["PN", "Rev"],
-        format: ".,.",
+        rows: [["PN"], ["Rev"]],
     },
     {
         company: "Moog",
-        fields: ["PN", "Rev", "Job#", "PO#"],
-        format: "..,.,.",
+        rows: [["PN", "Rev"], ["Job#"], ["PO#"]],
     },
     {
         company: "SpaceX",
-        fields: ["PN", "Rev", "Job#", "SN", "PO/Line"],
-        format: "..,.,.,.",
+        rows: [["PN", "Rev"], ["Job#"], ["SN"], ["PO/Line"]],
     },
 ].sort((a, b) => a.company < b.company ? -1 : 1);
