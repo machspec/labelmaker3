@@ -1,6 +1,6 @@
 <script lang="ts">
-    let printDuplicates: boolean = true;
-    let specifyQty: boolean = true;
+    let printDuplicates: boolean = false;
+    let specifyQty: boolean = false;
     let duplicateAmount: number = 0;
     let specifiedQty: number = 1;
 
@@ -25,6 +25,7 @@
                     type="number"
                     id="duplicate-amount"
                     name="duplicate-amount"
+                    title="Print {duplicateAmount} duplicate(s) of each label"
                     min="0"
                     bind:value={duplicateAmount}
                 />
@@ -45,7 +46,7 @@
                     type="number"
                     id="qty"
                     name="qty"
-                    title="Literally specifies 'QTY' on the printed label"
+                    title="Adds &quot;QTY: {specifiedQty}&quot; to the label"
                     min="1"
                     bind:value={specifiedQty}
                 />
