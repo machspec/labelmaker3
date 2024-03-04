@@ -22,6 +22,7 @@
 
 :root {
     --header-height: 4rem;
+    --selector-width: 300px;
     --bd: solid 1px var(--text-muted);
 }
 
