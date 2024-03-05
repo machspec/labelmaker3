@@ -1,15 +1,35 @@
 <script lang="ts">
+    import { checkValidity, formDataStore, formValidity } from "../stores";
+
     export let format: { [key: string]: any };
     export let active: boolean = false;
+
+    let form: HTMLFormElement;
+
+    const updateDataStore = () => {
+        if (!active) return;
+
+        formDataStore.update(() => {
+            return { ...Object.fromEntries(new FormData(form)) };
+        });
+    };
+
+    $: if (active && $checkValidity) {
+        if (form.checkValidity()) formValidity.set(true);
+        else formValidity.set(false);
+
+        form.reportValidity();
+        checkValidity.set(false);
+    }
 </script>
 
 <span class="container {active ? 'active' : ''}">
     <h1>Label Fields</h1>
-    <form action="">
+    <form bind:this={form} on:input={updateDataStore}>
         {#each format.rows as row}
             {#each row as field}
                 <label for="field">{field}</label>
-                <input type="text" id={field} name={field} />
+                <input required type="text" id={field} name={field} />
             {/each}
         {/each}
     </form>
