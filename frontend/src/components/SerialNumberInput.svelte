@@ -1,13 +1,23 @@
 <script lang="ts">
-    import { writable } from "svelte/store";
+    import { serialNumberList } from "../stores";
 
     let serialNumberDisplay: HTMLUListElement;
     let snEditor: HTMLInputElement;
     let editIndex: number | null = null;
     let serialNumber = "";
 
-    const serialNumberList = writable<string[]>([]);
     const lastSerialNumber = () => $serialNumberList.at(-1);
+
+    const scrollDisplay = () => {
+        // Delay the scroll to the end of the list to ensure
+        // that the width of the element has been updated.
+        setTimeout(
+            () =>
+                (serialNumberDisplay.scrollLeft =
+                    serialNumberDisplay.scrollWidth),
+            0,
+        );
+    };
 
     /**
      * Add a serial number to the list.
@@ -22,14 +32,7 @@
 
         serialNumberList.update((list) => [...list, input]);
 
-        // Delay the scroll to the end of the list to ensure
-        // that the width of the element has been updated.
-        setTimeout(
-            () =>
-                (serialNumberDisplay.scrollLeft =
-                    serialNumberDisplay.scrollWidth),
-            0,
-        );
+        scrollDisplay();
 
         if (clear) serialNumber = "";
     };

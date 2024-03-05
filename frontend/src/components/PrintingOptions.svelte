@@ -1,12 +1,38 @@
 <script lang="ts">
+    import {
+        checkValidity,
+        formDataStore,
+        formValidity,
+        serialNumberList,
+    } from "../stores";
+
     let printDuplicates: boolean = false;
     let specifyQty: boolean = false;
     let duplicateAmount: number = 0;
     let specifiedQty: number = 1;
 
-    // TODO
-    const handleSubmit = (e: Event) => {
-        console.log("Printing Options Submitted");
+    const handleSubmit = async () => {
+        checkValidity.set(true);
+
+        // Wait for form validation
+        await new Promise((res) => setTimeout(res, 0));
+        if (!$formValidity) {
+            console.error("Form is invalid.");
+            return;
+        }
+
+        formDataStore.update((data) => {
+            return {
+                ...data,
+                printDuplicates: printDuplicates,
+                specifyQty: specifyQty,
+                duplicateAmount: duplicateAmount,
+                specifiedQty: specifiedQty,
+                serialNumberList: $serialNumberList,
+            };
+        });
+
+        // TODO: Build Fetch API Request
     };
 </script>
 

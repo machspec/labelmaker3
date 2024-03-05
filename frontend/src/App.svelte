@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { activeForm } from "./stores.js";
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
     import FormatSelector from "./components/FormatSelector.svelte";
@@ -24,7 +25,8 @@
     };
 
     // Set to `null` in production.
-    let active: number | null = null;
+    let active: number | null;
+    activeForm.subscribe((value) => (active = value));
 
     onMount(async () => {
         fetch("/api/state")
@@ -44,24 +46,20 @@
                 state.loading = false;
             });
     });
-
-    const displayForm = (index: number) => {
-        active = index;
-    };
 </script>
 
 <Header {state} />
 
 <main>
     <FormatSelector>
-        {#each labelFormats as labelFormat, i}
+        {#each labelFormats as labelFormat, index}
             <!-- TODO: Fix these -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
             <h2
-                data-item={i}
-                on:click={() => displayForm(i)}
-                class={active === i ? "active" : ""}
+                data-item={index}
+                on:click={() => activeForm.update(() => index)}
+                class={active === index ? "active" : ""}
             >
                 {labelFormat.company}
             </h2>
