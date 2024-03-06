@@ -1,9 +1,11 @@
 <script lang="ts">
+    import { activeForm } from "./stores.js";
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
+    import FormatSelector from "./components/FormatSelector.svelte";
     import Header from "./components/Header.svelte";
     import LabelForm from "./components/LabelForm.svelte";
-    import FormatSelector from "./components/FormatSelector.svelte";
+    import PrintingOptions from "./components/PrintingOptions.svelte";
     import SerialNumberInput from "./components/SerialNumberInput.svelte";
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
@@ -23,7 +25,8 @@
     };
 
     // Set to `null` in production.
-    let active: number | null = 0;
+    let active: number | null;
+    activeForm.subscribe((value) => (active = value));
 
     onMount(async () => {
         fetch("/api/state")
@@ -43,24 +46,20 @@
                 state.loading = false;
             });
     });
-
-    const displayForm = (index: number) => {
-        active = index;
-    };
 </script>
 
 <Header {state} />
 
 <main>
     <FormatSelector>
-        {#each labelFormats as labelFormat, i}
+        {#each labelFormats as labelFormat, index}
             <!-- TODO: Fix these -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
             <h2
-                data-item={i}
-                on:click={() => displayForm(i)}
-                class={active === i ? "active" : ""}
+                data-item={index}
+                on:click={() => activeForm.update(() => index)}
+                class={active === index ? "active" : ""}
             >
                 {labelFormat.company}
             </h2>
@@ -78,6 +77,7 @@
 
         {#if active !== null}
             <SerialNumberInput />
+            <PrintingOptions />
         {/if}
     </div>
 </main>
@@ -85,8 +85,9 @@
 <style>
     main {
         display: grid;
-        grid-template-columns: 300px 2fr;
+        grid-template-columns: var(--selector-width) 2fr;
         height: calc(100vh - var(--header-height));
+        width: 100%;
         overflow-y: auto;
     }
 

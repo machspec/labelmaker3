@@ -1,13 +1,23 @@
 <script lang="ts">
-    import { writable } from "svelte/store";
+    import { serialNumberList } from "../stores";
 
     let serialNumberDisplay: HTMLUListElement;
     let snEditor: HTMLInputElement;
     let editIndex: number | null = null;
     let serialNumber = "";
 
-    const serialNumberList = writable<string[]>([]);
     const lastSerialNumber = () => $serialNumberList.at(-1);
+
+    const scrollDisplay = () => {
+        // Delay the scroll to the end of the list to ensure
+        // that the width of the element has been updated.
+        setTimeout(
+            () =>
+                (serialNumberDisplay.scrollLeft =
+                    serialNumberDisplay.scrollWidth),
+            0,
+        );
+    };
 
     /**
      * Add a serial number to the list.
@@ -22,14 +32,7 @@
 
         serialNumberList.update((list) => [...list, input]);
 
-        // Delay the scroll to the end of the list to ensure
-        // that the width of the element has been updated.
-        setTimeout(
-            () =>
-                (serialNumberDisplay.scrollLeft =
-                    serialNumberDisplay.scrollWidth),
-            0,
-        );
+        scrollDisplay();
 
         if (clear) serialNumber = "";
     };
@@ -136,6 +139,8 @@
                             if (e.key === "Enter") {
                                 if (snEditor.value === sn) editIndex = null;
                                 editSN(index, snEditor.value);
+                            } else if (e.key === "Escape" || e.key === "Tab") {
+                                editIndex = null;
                             }
                         }}
                     />
@@ -185,7 +190,7 @@
     .serial-number-display {
         display: grid;
         grid-auto-flow: column;
-        grid-template-rows: repeat(7, auto);
+        grid-template-rows: repeat(6, auto);
         gap: 0.25rem 1rem;
 
         max-width: 100%;
@@ -205,7 +210,7 @@
     }
 
     .serial-number button {
-        padding: 0.25rem 0.5rem;
+        padding: 0.1rem 0.5rem;
     }
 
     .serial-number input,
@@ -217,6 +222,7 @@
         border: none;
         color: var(--text);
         background-color: #fff3;
+        font-size: 1rem;
     }
 
     div {

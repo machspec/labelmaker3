@@ -20,7 +20,7 @@ def draw_label(label, width, height, obj):
 
 
 # function that returns the values of all entries
-def print_label(qty_req=False, *args):
+def print_label(data):
     path = "pdf"
     # Check whether the specified path exists or not
     isExist = os.path.exists(path)
@@ -45,16 +45,32 @@ def print_label(qty_req=False, *args):
 
     output = []
 
-    sn_entry_window = ["SN1", "SN2", "SN3", "SN4", "SN5"]
+    # Quantity required
+    qty_req = data.get("specifyQty")
+    qty = data.get("specifiedQty")
 
-    try:
+    # Get the content of the label
+    content = data.get("rows")
+
+    # Get the serial numbers
+    sn_entry_window = data.get("serialNumberList")
+
+    if len(sn_entry_window) > 0:
         # format values for printing w/ serial numbers
         for index, serial_number in enumerate(sn_entry_window):
-            output.append([[f"{k.upper()}:{v.upper()}" for k, v in args[0].items()]])
+            row = []
+            for item in content:
+                for k, v in item.items():
+                    row.append(f"{k.upper()}:{v.upper()}")
+            output.append([row])
             output[index][0].append(f"SN:{serial_number.upper()}")
-    except AttributeError:
+    else:
         # format values for printing w/out serial numbers
-        output.append([[f"{k.upper()}:{v.upper()}" for k, v in args[0].items()]])
+        row = []
+        for item in content:
+            for k, v in item.items():
+                row.append(f"{k.upper()}:{v.upper()}")
+        output.append([row])
 
     # join items that share a line
     output_formatted = [[]]
@@ -62,7 +78,7 @@ def print_label(qty_req=False, *args):
         subgroup = {i.split(":")[0]: i.split(":")[1] for i in group[0]}
         pop_list = [f"{i}:{j}" if j else None for i, j in subgroup.items()]
         pop_list = list(filter(None, pop_list))
-        qty_text = "  QTY:1" if qty_req else ""
+        qty_text = f"  QTY:{qty}" if qty_req else ""
 
         ### add items to list, account for missing items
 

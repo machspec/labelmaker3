@@ -26,4 +26,8 @@
         height: 100%;
         width: auto;
     }
+
+    .version-text {
+        font-size: 1rem;
+    }
 </style>

@@ -1,43 +1,53 @@
 <script lang="ts">
+    import { checkValidity, formDataStore, formValidity } from "../stores";
+
     export let format: { [key: string]: any };
     export let active: boolean = false;
 
-    let values: any[] = [];
+    let form: HTMLFormElement;
+    let rows: object[] = new Array(format.length);
 
-    function print() {
-        console.log(values);
+    const formObj = () => Object.fromEntries(new FormData(form));
 
-        const params = new URLSearchParams();
+    const updateDataStore = () => {
+        if (!active) return;
 
-        for (let i = 0; i < format.fields.length; i++) {
-            params.append(format.fields[i].toUpperCase(), values[i]);
-        }
+        // Group form data by row defined in format
+        let data = formObj();
+        format.rows.map((row: string[], index: number) => {
+            row.forEach((field: string) => {
+                rows[index] = { ...rows[index], [field]: data[field] };
+            });
+        });
 
-        fetch("api/print_label", {
-            method: "POST",
-            body: params.toString(),
-        })
-            .then((response) => response.text())
-            .then((text) => console.log(text));
-    }
+        formDataStore.update(() => {
+            return { rows: rows };
+        });
+    };
 
-    function setupValues() {
-        values = Array(format.fields.length).fill("");
-    }
+    $: if (active && $checkValidity) {
+        if (form.checkValidity()) formValidity.set(true);
+        else formValidity.set(false);
 
-    $: {
-        if (format.fields.length > 0) {
-            setupValues();
-        }
+        form.reportValidity();
+        checkValidity.set(false);
     }
 </script>
 
 <span class="container {active ? 'active' : ''}">
     <h1>Label Fields</h1>
-    <form action="">
-        {#each format.fields as field, i}
-            <label for="field">{field}</label>
-            <input type="text" id="field" name="field" bind:value={values[i]} />
+    <form bind:this={form} on:input={updateDataStore}>
+        {#each format.rows as row, index}
+            {#each row as field}
+                <label for={field}>{field}</label>
+                <input
+                    required
+                    type="text"
+                    id={field}
+                    name={field}
+                    data-row-index={index}
+                />
+            {/each}
         {/each}
         <button type="button" on:click={print}>Print</button>
     </form>

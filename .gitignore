@@ -1,4 +1,5 @@
 .env
 .vscode/settings.json
+backend/.target
 backend/pdf
-backend/python_app/utils/__pycache__
+backend/python_app/utils/__pycache__/

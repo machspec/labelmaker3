@@ -1,12 +1,7 @@
 from utils.label import print_label
-from urllib.parse import parse_qsl
+import json
 
 
 def run(*args):
-    # print(args)
-
-    params_dict = dict(parse_qsl(args[1]))
-
-    print(params_dict)
-
-    return print_label(args[0], params_dict)
+    data_dict = json.loads(args[0])
+    return print_label(data_dict)
