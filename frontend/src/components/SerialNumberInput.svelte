@@ -139,6 +139,8 @@
                             if (e.key === "Enter") {
                                 if (snEditor.value === sn) editIndex = null;
                                 editSN(index, snEditor.value);
+                            } else if (e.key === "Escape" || e.key === "Tab") {
+                                editIndex = null;
                             }
                         }}
                     />
@@ -188,7 +190,7 @@
     .serial-number-display {
         display: grid;
         grid-auto-flow: column;
-        grid-template-rows: repeat(7, auto);
+        grid-template-rows: repeat(6, auto);
         gap: 0.25rem 1rem;
 
         max-width: 100%;
@@ -208,7 +210,7 @@
     }
 
     .serial-number button {
-        padding: 0.25rem 0.5rem;
+        padding: 0.1rem 0.5rem;
     }
 
     .serial-number input,
@@ -220,6 +222,7 @@
         border: none;
         color: var(--text);
         background-color: #fff3;
+        font-size: 1rem;
     }
 
     div {
