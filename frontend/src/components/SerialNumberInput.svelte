@@ -188,7 +188,7 @@
     .serial-number-display {
         display: grid;
         grid-auto-flow: column;
-        grid-template-rows: repeat(7, auto);
+        grid-template-rows: repeat(6, auto);
         gap: 0.25rem 1rem;
 
         max-width: 100%;
@@ -208,7 +208,7 @@
     }
 
     .serial-number button {
-        padding: 0.25rem 0.5rem;
+        padding: 0.1rem 0.5rem;
     }
 
     .serial-number input,
