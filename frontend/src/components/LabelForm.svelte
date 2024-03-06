@@ -5,12 +5,23 @@
     export let active: boolean = false;
 
     let form: HTMLFormElement;
+    let rows: object[] = new Array(format.length);
+
+    const formObj = () => Object.fromEntries(new FormData(form));
 
     const updateDataStore = () => {
         if (!active) return;
 
+        // Group form data by row defined in format
+        let data = formObj();
+        format.rows.map((row: string[], index: number) => {
+            row.forEach((field: string) => {
+                rows[index] = { ...rows[index], [field]: data[field] };
+            });
+        });
+
         formDataStore.update(() => {
-            return { ...Object.fromEntries(new FormData(form)) };
+            return { rows: rows };
         });
     };
 
@@ -26,10 +37,16 @@
 <span class="container {active ? 'active' : ''}">
     <h1>Label Fields</h1>
     <form bind:this={form} on:input={updateDataStore}>
-        {#each format.rows as row}
+        {#each format.rows as row, index}
             {#each row as field}
-                <label for="field">{field}</label>
-                <input required type="text" id={field} name={field} />
+                <label for={field}>{field}</label>
+                <input
+                    required
+                    type="text"
+                    id={field}
+                    name={field}
+                    data-row-index={index}
+                />
             {/each}
         {/each}
     </form>
