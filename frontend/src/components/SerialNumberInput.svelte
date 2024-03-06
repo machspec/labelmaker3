@@ -139,6 +139,8 @@
                             if (e.key === "Enter") {
                                 if (snEditor.value === sn) editIndex = null;
                                 editSN(index, snEditor.value);
+                            } else if (e.key === "Escape" || e.key === "Tab") {
+                                editIndex = null;
                             }
                         }}
                     />
@@ -220,6 +222,7 @@
         border: none;
         color: var(--text);
         background-color: #fff3;
+        font-size: 1rem;
     }
 
     div {
