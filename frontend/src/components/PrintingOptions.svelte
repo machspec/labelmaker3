@@ -34,6 +34,13 @@
 
         // TODO: Build Fetch API Request
         console.log($formDataStore);
+
+        fetch("api/print_label", {
+            method: "POST",
+            body: JSON.stringify($formDataStore),
+        })
+            .then((response) => response.text())
+            .then((text) => console.log(text));
     };
 </script>
 
