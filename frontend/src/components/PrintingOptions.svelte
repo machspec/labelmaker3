@@ -33,6 +33,7 @@
         });
 
         // TODO: Build Fetch API Request
+        console.log($formDataStore);
     };
 </script>
 
