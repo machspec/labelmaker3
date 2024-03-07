@@ -31,12 +31,6 @@ def build_specification(**kwargs):
         corner_radius=kwargs.get("corner_radius", CORNER_RADIUS),
     )
 
-def run(*args):
-    """Run the generator."""
-    data_dict = json.loads(args[0])
-    return print_label(data_dict)
-
-
 def draw_label(label, width, _height, obj):
     """Draw a single label."""
     for index, item in enumerate(obj[::-1], start=1):
@@ -98,3 +92,8 @@ def print_label(data):
     sheet.save(output_path)
 
     return f"Output generated at: {output_path}"
+
+def run(*args):
+    """Run the generator."""
+    data_dict = json.loads(args[0])
+    return print_label(data_dict)
