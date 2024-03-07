@@ -6,6 +6,9 @@ import os
 OUTPUT_DIRECTORY = "pdf"
 OUTPUT_FILENAME = "labels.pdf"
 
+FONT_SIZE = 10
+LINES_PER_LABEL = 5
+
 SHEET_WIDTH = 216
 SHEET_HEIGHT = 279
 COLUMNS = 3
@@ -34,14 +37,15 @@ def build_specification(**kwargs):
 
 def draw_label(label, width, _height, obj):
     """Draw a single label."""
+    y_offset = len(obj) - LINES_PER_LABEL
     for index, item in enumerate(obj[::-1], start=1):
         label.add(
             shapes.String(
                 width // 2,
-                11 * index,
+                (11 * index) - y_offset * FONT_SIZE//2,
                 item,
                 fontName="Helvetica",
-                fontSize=10,
+                fontSize=FONT_SIZE,
                 textAnchor="middle",
             )
         )
