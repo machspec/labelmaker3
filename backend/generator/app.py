@@ -44,7 +44,7 @@ def draw_label(label, width, _height, obj):
                 width // 2,
                 11 * index - y_offset * FONT_SIZE//2,
                 item,
-                fontName="Helvetica",
+                fontName="Helvetica-Bold",
                 fontSize=FONT_SIZE,
                 textAnchor="middle",
             )
