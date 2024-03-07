@@ -4,6 +4,7 @@ import labels
 import os
 
 OUTPUT_DIRECTORY = "pdf"
+OUTPUT_FILENAME = "labels.pdf"
 
 SHEET_WIDTH = 216
 SHEET_HEIGHT = 279
@@ -88,7 +89,7 @@ def print_label(data):
     for label in output_formatted:
         sheet.add_label(label, amount_per_label if print_multiple else 1)
 
-    output_path = f"{OUTPUT_DIRECTORY}/labels.pdf"
+    output_path = os.path.join(OUTPUT_DIRECTORY, OUTPUT_FILENAME)
     sheet.save(output_path)
 
     return f"Output generated at: {output_path}"
