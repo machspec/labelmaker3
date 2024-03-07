@@ -38,6 +38,14 @@
     };
 
     /**
+     * Clear the list of serial numbers.
+     */
+    const clearSerialNumbers = () => {
+        if ($serialNumberList.length === 0) return;
+        if (confirm("Remove all serial numbers?")) serialNumberList.set([]);
+    };
+
+    /**
      * Edit a serial number given its index.
      * @param index Index of the serial number to be updated.
      * @param value New value to be assigned to the serial number.
@@ -118,12 +126,15 @@
         <button on:click={() => addSN()} title="Add a Serial Number">
             Add
         </button>
+
         <button
             on:click={() => addSN(incrementSN(), false)}
             title="Increment the previous Serial Number"
         >
             Increment
         </button>
+
+        <button on:click={() => clearSerialNumbers()}> Clear </button>
     </div>
 
     <ul class="serial-number-display" bind:this={serialNumberDisplay}>
@@ -227,7 +238,7 @@
 
     div {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 1fr 1fr;
         min-width: 320px;
         width: 50%;
