@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 mod actions;
 mod config;
+mod generator;
 
 pub use config::Config;
 

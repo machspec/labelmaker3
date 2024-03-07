@@ -49,7 +49,6 @@
                 />
             {/each}
         {/each}
-        <button type="button" on:click={print}>Print</button>
     </form>
 </span>
 
