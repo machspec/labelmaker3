@@ -3,7 +3,7 @@ import json
 import labels
 import os
 
-OUTPUT_PATH = "pdf"
+OUTPUT_DIRECTORY = "pdf"
 
 SHEET_WIDTH = 216
 SHEET_HEIGHT = 279
@@ -55,8 +55,8 @@ def join_items(line):
     return " ".join([f"{k}:{v}" for k, v in line.items()])
 
 def print_label(data):
-    if not os.path.exists(OUTPUT_PATH):
-        os.makedirs(OUTPUT_PATH)
+    if not os.path.exists(OUTPUT_DIRECTORY):
+        os.makedirs(OUTPUT_DIRECTORY)
 
     # TODO: Get sheet specification from data
     sheet = labels.Sheet(build_specification(), draw_label, border=True)
@@ -64,17 +64,16 @@ def print_label(data):
 
     print_multiple = data.get("printMultiple")
     amount_per_label = data.get("amountPerLabel")
-
     specify_qty = data.get("specifyQty")
-    sqecified_qty = data.get("specifiedQty")
+    specified_qty = data.get("specifiedQty")
     
     rows = data.get("rows")
     serial_numbers = data.get("serialNumberList")
 
     # Format data when serial numbers are present
     if serial_numbers:
-        for _ in range(len(serial_numbers)):
-            current_sn = serial_numbers.pop(0)
+        for index in range(len(serial_numbers)):
+            current_sn = serial_numbers[index]
             output.append([*rows, {"SN":current_sn}])
     else:
         output.append([*rows])
@@ -86,7 +85,7 @@ def print_label(data):
         for index, line in enumerate(label_details, start=1):
             line_content = join_items(line)
             if index == len(label_details) and specify_qty:
-                line_content += f" QTY:{sqecified_qty}"
+                line_content += f" QTY:{specified_qty}"
 
             contents.append(line_content)
 
@@ -95,7 +94,7 @@ def print_label(data):
     for label in output_formatted:
         sheet.add_label(label, amount_per_label if print_multiple else 1)
 
-    output_path = f"{OUTPUT_PATH}/labels.pdf"
+    output_path = f"{OUTPUT_DIRECTORY}/labels.pdf"
     sheet.save(output_path)
 
     return f"Output generated at: {output_path}"
