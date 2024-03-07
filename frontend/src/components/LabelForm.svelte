@@ -25,6 +25,7 @@
         });
     };
 
+    $: active && updateDataStore();
     $: if (active && $checkValidity) {
         if (form.checkValidity()) formValidity.set(true);
         else formValidity.set(false);
