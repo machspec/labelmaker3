@@ -50,6 +50,6 @@ export let labelFormats: Array<CompanyLabelFormat> = [
     },
     {
         company: "SpaceX",
-        rows: [["PN", "Rev"], ["Job#"], ["SN"], ["PO/Line"]],
+        rows: [["PN", "Rev"], ["Job#"], ["PO/Line"]],
     },
 ].sort((a, b) => a.company < b.company ? -1 : 1);

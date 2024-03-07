@@ -6,9 +6,9 @@
         serialNumberList,
     } from "../stores";
 
-    let printDuplicates: boolean = false;
+    let printMultiple: boolean = false;
     let specifyQty: boolean = false;
-    let duplicateAmount: number = 0;
+    let amountPerLabel: number = 1;
     let specifiedQty: number = 1;
 
     const handleSubmit = async () => {
@@ -24,9 +24,9 @@
         formDataStore.update((data) => {
             return {
                 ...data,
-                printDuplicates: printDuplicates,
+                printMultiple: printMultiple,
                 specifyQty: specifyQty,
-                duplicateAmount: duplicateAmount,
+                amountPerLabel: amountPerLabel,
                 specifiedQty: specifiedQty,
                 serialNumberList: $serialNumberList,
             };
@@ -49,20 +49,20 @@
         <fieldset>
             <span>
                 <input
-                    name="print-duplicates"
+                    name="print-multiple"
                     type="checkbox"
-                    bind:checked={printDuplicates}
+                    bind:checked={printMultiple}
                 />
-                <label for="print-duplicates">Print Duplicates</label>
-                {#if printDuplicates}
-                    <label for="duplicate-amount">&lpar;Amount&rpar;</label>
+                <label for="print-multiple">Print Multiple</label>
+                {#if printMultiple}
+                    <label for="amount-per-label">&lpar;Amount&rpar;</label>
                     <input
                         type="number"
-                        id="duplicate-amount"
-                        name="duplicate-amount"
-                        title="Print {duplicateAmount} duplicate(s) of each label"
-                        min="0"
-                        bind:value={duplicateAmount}
+                        id="amount-per-label"
+                        name="amount-per-label"
+                        title="Print {amountPerLabel} of each label"
+                        min="1"
+                        bind:value={amountPerLabel}
                     />
                 {/if}
             </span>
