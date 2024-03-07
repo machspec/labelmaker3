@@ -42,7 +42,7 @@ def draw_label(label, width, _height, obj):
         label.add(
             shapes.String(
                 width // 2,
-                (11 * index) - y_offset * FONT_SIZE//2,
+                11 * index - y_offset * FONT_SIZE//2,
                 item,
                 fontName="Helvetica",
                 fontSize=FONT_SIZE,
