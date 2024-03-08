@@ -4,6 +4,8 @@
         formDataStore,
         formValidity,
         serialNumberList,
+        showPdf,
+        pdfUrl,
     } from "../stores";
 
     let printMultiple: boolean = false;
@@ -32,15 +34,21 @@
             };
         });
 
-        // TODO: Build Fetch API Request
-        console.log($formDataStore);
-
-        fetch("api/print_label", {
-            method: "POST",
-            body: JSON.stringify($formDataStore),
-        })
-            .then((response) => response.text())
-            .then((text) => console.log(text));
+        // Fetch API Request to generate Labels
+        try {
+            const response = await fetch("api/print_label", {
+                method: "POST",
+                body: JSON.stringify($formDataStore),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            const blob = await response.blob();
+            $pdfUrl = URL.createObjectURL(blob);
+            $showPdf = true;
+        } catch (error) {
+            console.error("Error fetching file:", error);
+        }
     };
 </script>
 

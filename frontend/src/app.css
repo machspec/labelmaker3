@@ -52,3 +52,33 @@ html {
     display: grid;
     grid-template-rows: var(--header-height) 1fr;
 }
+
+#pdf-viewer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #dce3e99e;
+    overflow: auto;
+}
+
+#pdf-viewer .parent {
+    width: max-content;
+    margin: auto;
+}
+
+#pdf-viewer .close {
+    position: fixed;
+    top: 1rem;
+    right: 2rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #c43030;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+}
