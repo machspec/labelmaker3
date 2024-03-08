@@ -11,7 +11,6 @@ RUN pip3 install reportlab pylabels --break-system-packages
 
 # Set the working directory
 WORKDIR /app/backend
-COPY backend/generator/ ./generator
 COPY backend/ ./
 
 # Set environment variables

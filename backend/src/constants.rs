@@ -1,10 +1,6 @@
 // Generator-specific constants
 pub mod generator {
-    pub const DIRECTORY: &str = "generator";
-    pub const ENTRYPOINT: &str = "app.py";
-    pub const PATH: &str = "path";
-    pub const RUN: &str = "run";
-    pub const SYS: &str = "sys";
+    pub const GENERATOR_ENTRYPOINT: &str = "run";
 }
 
 // Important constants
