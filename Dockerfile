@@ -43,6 +43,14 @@ RUN apt-get update && \
     apt install -y libpython3-dev openssl curl && \
     rm -rf /var/lib/apt/lists/*
 
+# Install system dependencies
+RUN apt update && \
+    apt install -y build-essential python3 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip3 install reportlab pylabels --break-system-packages
+
 # Expose the port your Rocket application listens on (default is 8000)
 EXPOSE 8000
 

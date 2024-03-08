@@ -4,8 +4,6 @@
         formDataStore,
         formValidity,
         serialNumberList,
-        showPdf,
-        pdfUrl,
     } from "../stores";
 
     let printMultiple: boolean = false;
