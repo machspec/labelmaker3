@@ -35,11 +35,11 @@ FROM debian:bookworm-slim
 # Copy the backend and frontend to the final stage
 WORKDIR /app
 COPY --from=build-backend /backend/target/release /app/backend
-COPY --from=build-frontend /frontend/dist /app/frontend/dist
+COPY --from=build-frontend ./frontend/dist /app/frontend/dist
 
 # Install dependencies
 RUN apt-get update && \
-    apt install -y openssl curl && \
+    apt install -y libpython3-dev openssl curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Expose the port your Rocket application listens on (default is 8000)
