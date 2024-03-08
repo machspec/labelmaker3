@@ -38,7 +38,7 @@ COPY --from=build-backend /app/backend/target/release /app/backend
 COPY ./backend/config.ini /app
 COPY --from=build-frontend /app/frontend/dist /app/frontend/dist
 
-# Install library for libssl.so.3, libpython3
+# Install dependencies
 RUN apt-get update && \
     apt install -y libpython3-dev openssl curl && \
     rm -rf /var/lib/apt/lists/*
