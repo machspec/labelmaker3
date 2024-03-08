@@ -1,7 +1,6 @@
 <script lang="ts">
     import { activeForm, showPdf, pdfUrl } from "./stores.js";
     import { onMount } from "svelte";
-    import PdfViewer from "svelte-pdf";
     import { labelFormats } from "./companies";
     import FormatSelector from "./components/FormatSelector.svelte";
     import Header from "./components/Header.svelte";
@@ -89,20 +88,6 @@
             title="Exit PDF Viewer"
             on:click={() => ($showPdf = false)}
         ></button>
-
-        <PdfViewer
-            data=""
-            downloadFileName="labels.pdf"
-            scale={1}
-            showButtons={[
-                "navigation",
-                "zoom",
-                "print",
-                "download",
-                "pageInfo",
-            ]}
-            url={$pdfUrl}
-        />
     </div>
 {/if}
 
