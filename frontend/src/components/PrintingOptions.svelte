@@ -40,10 +40,13 @@
                 method: "POST",
                 body: JSON.stringify($formDataStore),
             });
+
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
+
             const blob = await response.blob();
+
             $pdfUrl = URL.createObjectURL(blob);
             $showPdf = true;
         } catch (error) {

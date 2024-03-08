@@ -21,9 +21,12 @@
 }
 
 :root {
-    --header-height: 4rem;
-    --selector-width: 300px;
     --bd: solid 1px var(--text-muted);
+    --header-height: 4rem;
+    --overlay: #000a;
+    --pdf-viewer-btn: #38b2ac;
+    --pdf-viewer-btn-hover: #7ad3ce;
+    --selector-width: 300px;
 }
 
 * {
@@ -56,16 +59,15 @@ html {
 #pdf-viewer {
     position: fixed;
     top: 0;
-    right: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #dce3e99e;
+    background-color: var(--overlay);
     overflow: auto;
 }
 
 #pdf-viewer .parent {
     width: max-content;
-    margin: auto;
+    margin: 1rem auto;
 }
 
 #pdf-viewer .close {
@@ -75,10 +77,43 @@ html {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background-color: #c43030;
+    background-color: var(--pdf-viewer-btn);
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 700;
+    font-size: 1.5rem;
+}
+
+#pdf-viewer .close:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: "\00D7";
+}
+
+#pdf-viewer .close:hover {
+    background-color: var(--pdf-viewer-btn-hover);
+}
+
+#topBtn {
+    position: fixed;
+    bottom: 2rem !important;
+    border-radius: 50%;
+    height: 30px;
+    background-color: var(--pdf-viewer-btn) !important;
+}
+
+#topBtn:hover {
+    background-color: var(--pdf-viewer-btn-hover) !important;
+}
+
+#topBtn .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff !important;
 }

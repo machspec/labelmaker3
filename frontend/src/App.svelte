@@ -84,10 +84,16 @@
 </main>
 {#if $showPdf}
     <div id="pdf-viewer">
-        <button class="close" on:click={() => ($showPdf = false)}>x</button>
+        <button
+            class="close"
+            title="Exit PDF Viewer"
+            on:click={() => ($showPdf = false)}
+        ></button>
+
         <PdfViewer
-            url={$pdfUrl}
+            data=""
             downloadFileName="labels.pdf"
+            scale={1}
             showButtons={[
                 "navigation",
                 "zoom",
@@ -95,6 +101,7 @@
                 "download",
                 "pageInfo",
             ]}
+            url={$pdfUrl}
         />
     </div>
 {/if}
