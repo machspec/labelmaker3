@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { activeForm, showPdf, pdfUrl } from "./stores.js";
+    import { activeForm } from "./stores.js";
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
     import FormatSelector from "./components/FormatSelector.svelte";
@@ -81,15 +81,6 @@
         {/if}
     </div>
 </main>
-{#if $showPdf}
-    <div id="pdf-viewer">
-        <button
-            class="close"
-            title="Exit PDF Viewer"
-            on:click={() => ($showPdf = false)}
-        ></button>
-    </div>
-{/if}
 
 <style>
     main {
