@@ -37,7 +37,7 @@ WORKDIR /app
 COPY --from=build-backend /backend/target/release /app/backend
 COPY --from=build-frontend /frontend/dist /app/frontend/dist
 
-# Install library for libssl.so.3
+# Install dependencies
 RUN apt-get update && \
     apt install -y openssl curl && \
     rm -rf /var/lib/apt/lists/*
