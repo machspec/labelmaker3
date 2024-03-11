@@ -3,6 +3,7 @@
         checkValidity,
         formDataStore,
         formValidity,
+        loading,
         serialNumberList,
     } from "../stores";
 
@@ -12,6 +13,7 @@
     let specifiedQty: number = 1;
 
     const handleSubmit = async () => {
+        loading.set(true);
         checkValidity.set(true);
 
         // Wait for form validation
@@ -44,12 +46,17 @@
             }
 
             const blob = await response.blob();
-            const pdfBlob = new Blob([blob], { type: "application/pdf" }); // Specify MIME type
-            const url = URL.createObjectURL(pdfBlob); // Create blob URL
+
+            // Ensure MIME type is application/pdf
+            const pdfBlob = new Blob([blob], { type: "application/pdf" });
+            const url = URL.createObjectURL(pdfBlob);
+
             window.open(url, "_blank"); // Open in a new tab
         } catch (error) {
             console.error("Error fetching file:", error);
         }
+
+        loading.set(false);
     };
 </script>
 

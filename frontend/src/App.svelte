@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { activeForm } from "./stores.js";
+    import { appState, activeForm, loading } from "./stores.js";
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
     import FormatSelector from "./components/FormatSelector.svelte";
     import Header from "./components/Header.svelte";
     import LabelForm from "./components/LabelForm.svelte";
+    import LoadingOverlay from "./components/LoadingOverlay.svelte";
     import PrintingOptions from "./components/PrintingOptions.svelte";
     import SerialNumberInput from "./components/SerialNumberInput.svelte";
 
@@ -12,19 +13,6 @@
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
     const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";
 
-    interface AppState {
-        app_title?: string;
-        app_version?: string;
-        data?: Record<string, any>;
-        error?: string;
-        loading: boolean;
-    }
-
-    let state: AppState = {
-        loading: true,
-    };
-
-    // Set to `null` in production.
     let active: number | null;
     activeForm.subscribe((value) => (active = value));
 
@@ -32,22 +20,32 @@
         fetch("/api/state")
             .then(async (res) => {
                 if (res.ok) {
-                    state = { ...(await res.json()), loading: false };
-                    document.title = state.app_title || "[app_title]";
+                    const data = await res.json();
+
+                    appState.set({
+                        ...data,
+                        loading: false,
+                    });
+
+                    document.title = data.app_title;
+                    loading.set(false);
                 } else {
                     console.error(`ERROR ${res.status}: ${res.statusText}`);
-                    state.error = STATE_FETCH_FAIL_MESSAGE;
-                    state.loading = false;
+                    appState.setError(STATE_FETCH_FAIL_MESSAGE);
+                    loading.set(false);
                 }
             })
             .catch((err) => {
                 console.error(NETWORK_ERROR_MESSAGE, err);
-                state.error = NETWORK_ERROR_MESSAGE;
-                state.loading = false;
+                appState.setError(NETWORK_ERROR_MESSAGE);
+                loading.set(false);
             });
     });
+
+    $: state = $appState;
 </script>
 
+<LoadingOverlay />
 <Header {state} />
 
 <main>
@@ -114,6 +112,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        text-wrap: nowrap;
     }
 
     .container > :global(.active) {
