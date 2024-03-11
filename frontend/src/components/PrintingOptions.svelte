@@ -4,8 +4,6 @@
         formDataStore,
         formValidity,
         serialNumberList,
-        showPdf,
-        pdfUrl,
     } from "../stores";
 
     let printMultiple: boolean = false;
@@ -46,9 +44,9 @@
             }
 
             const blob = await response.blob();
-
-            $pdfUrl = URL.createObjectURL(blob);
-            $showPdf = true;
+            const pdfBlob = new Blob([blob], { type: "application/pdf" }); // Specify MIME type
+            const url = URL.createObjectURL(pdfBlob); // Create blob URL
+            window.open(url, "_blank"); // Open in a new tab
         } catch (error) {
             console.error("Error fetching file:", error);
         }

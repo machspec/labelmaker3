@@ -2,6 +2,7 @@ use super::generator::generate_label_file;
 use crate::AppState;
 use rocket::{serde::json::Json, State};
 
+use std::env;
 use std::fs::File;
 use std::path::Path;
 
@@ -20,13 +21,16 @@ pub fn print_label(data: &str) -> Result<Option<File>, String> {
     match generate_label_file(data) {
         Ok(_) => {
             // Prepare path string to upload folder
-            let upload_dir = concat!(env!("CARGO_MANIFEST_DIR"), "/", "pdf");
+            let pdf_dir = Path::new("pdf").join("labels.pdf");
 
-            // Get path of the file by file name
-            let filename = Path::new(upload_dir).join("labels.pdf");
+            // Get the current working directory
+            let cwd = env::current_dir().expect("Failed to get current working directory");
+
+            // Join the CWD and pdf_dir
+            let file_path = cwd.join(pdf_dir);
 
             // Load file
-            Ok(File::open(&filename).ok())
+            Ok(File::open(file_path).ok())
         }
         Err(e) => Err(format!("Error: {}", e)),
     }
