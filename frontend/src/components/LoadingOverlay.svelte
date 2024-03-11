@@ -40,7 +40,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: var(--overlay);
+        background-color: var(--loading-overlay);
         opacity: 1;
         z-index: 100;
 
@@ -63,6 +63,7 @@
     p {
         font-size: 1.5rem;
         font-weight: bold;
+        color: var(--loading-text);
     }
 
     @keyframes spin {

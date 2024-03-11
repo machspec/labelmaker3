@@ -5,6 +5,9 @@
         --background: #eee;
         --accent: #abf;
         --accent-hover: #cdf;
+        --loading-overlay: #ccc;
+        --loading-text: #000;
+        --spinner-primary: #0002;
         --text: #111;
         --text-muted: #0002;
     }
@@ -15,6 +18,9 @@
         --background: #222;
         --accent: #111;
         --accent-hover: #444;
+        --loading-overlay: #000;
+        --loading-text: #ccc;
+        --spinner-primary: #fff2;
         --text: #eee;
         --text-muted: #fff2;
     }
@@ -23,12 +29,10 @@
 :root {
     --bd: solid 1px var(--text-muted);
     --header-height: 4rem;
-    --overlay: #000;
     --pdf-viewer-btn: #38b2ac;
     --pdf-viewer-btn-hover: #7ad3ce;
     --selector-width: 300px;
     --spinner-thickness: 10px;
-    --spinner-primary: #000a;
     --spinner-accent: #69f;
     --spinner-diameter: 55px;
 }
