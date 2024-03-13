@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { checkValidity, formDataStore, formValidity } from "../stores";
+    import {
+        checkValidity,
+        formDataStore,
+        formValidity,
+        loading,
+    } from "../stores";
 
     export let format: { [key: string]: any };
     export let active: boolean = false;
@@ -27,8 +32,12 @@
 
     $: active && updateDataStore();
     $: if (active && $checkValidity) {
-        if (form.checkValidity()) formValidity.set(true);
-        else formValidity.set(false);
+        if (form.checkValidity()) {
+            formValidity.set(true);
+            loading.set(true);
+        } else {
+            formValidity.set(false);
+        }
 
         form.reportValidity();
         checkValidity.set(false);

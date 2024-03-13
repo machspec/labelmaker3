@@ -13,7 +13,6 @@
     let specifiedQty: number = 1;
 
     const handleSubmit = async () => {
-        loading.set(true);
         checkValidity.set(true);
 
         // Wait for form validation
