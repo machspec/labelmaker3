@@ -14,6 +14,10 @@
 
     const formObj = () => Object.fromEntries(new FormData(form));
 
+    const clearForm = () => {
+        if (confirm("Clear all fields?")) form.reset();
+    };
+
     const updateDataStore = () => {
         if (!active) return;
 
@@ -60,7 +64,7 @@
             {/each}
         {/each}
         <div class="form-options">
-            <button class="clear" on:click={() => form.reset()}>Clear</button>
+            <button class="clear" on:click={clearForm}>Clear</button>
         </div>
     </form>
 </span>
