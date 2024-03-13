@@ -1,6 +1,5 @@
 <script lang="ts">
     import { msal } from "../stores";
-    import { onMount } from "svelte";
 
     const login = async () => {
         const loginRequest = {
@@ -17,3 +16,9 @@
 </script>
 
 <button on:click={login}>Log In</button>
+
+<style>
+    button {
+        background-color: var(--background);
+    }
+</style>

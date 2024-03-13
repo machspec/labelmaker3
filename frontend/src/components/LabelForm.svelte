@@ -88,10 +88,6 @@
         width: 100%;
     }
 
-    .form-options > button {
-        padding: 0.25rem 2rem;
-    }
-
     form {
         display: grid;
         grid-template-columns: auto 1fr;

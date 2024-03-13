@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Login from "./Login.svelte";
+    import Login from "./LoginButton.svelte";
     export let state: { app_title?: string; app_version?: string };
 </script>
 
@@ -17,6 +17,7 @@
 
 <style>
     header {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -33,5 +34,10 @@
 
     .version-text {
         font-size: 1rem;
+    }
+
+    :global(button) {
+        position: absolute;
+        right: 1rem;
     }
 </style>
