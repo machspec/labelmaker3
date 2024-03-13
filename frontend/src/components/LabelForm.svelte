@@ -59,11 +59,15 @@
                 />
             {/each}
         {/each}
+        <div class="form-options">
+            <button class="clear" on:click={() => form.reset()}>Clear</button>
+        </div>
     </form>
 </span>
 
 <style>
     .container {
+        position: relative;
         display: none;
     }
 
@@ -71,6 +75,17 @@
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
+    }
+
+    .form-options {
+        display: flex;
+        justify-content: flex-end;
+        grid-column: 1/-1;
+        width: 100%;
+    }
+
+    .form-options > button {
+        padding: 0.25rem 2rem;
     }
 
     form {
@@ -86,7 +101,6 @@
     }
 
     form > input {
-        max-width: 600px;
         min-width: 300px;
         width: 100%;
     }
