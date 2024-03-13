@@ -37,7 +37,6 @@
             loading.set(true);
         } else {
             formValidity.set(false);
-            loading.set(false);
         }
 
         form.reportValidity();
