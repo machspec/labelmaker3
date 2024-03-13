@@ -24,11 +24,6 @@ const SvelteWrapper = () => {
 // MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
 
-// Initialize Svelte
-const svelteApp = new App({
-    target: document.getElementById('app'),
-})
-
 // Initialize React
 const ReactApp = () => (
     <MsalProvider instance={msalInstance} >
