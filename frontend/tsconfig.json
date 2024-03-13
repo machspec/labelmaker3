@@ -17,10 +17,10 @@
         "outDir": "dist"
     },
     "include": [
-        "src/**/*.js",
         "src/**/*.ts",
+        "src/**/*.js",
         "src/**/*.svelte"
-, "src/main.tsx"    ],
+    ],
     "references": [
         {
             "path": "./tsconfig.node.json"
