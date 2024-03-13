@@ -8,7 +8,7 @@ export interface AppState {
     loading: Writable<boolean>;
 }
 
-export const activeForm = writable<number | null>(null);
+export const activeForm = writable<number | null>(0);
 export const checkValidity = writable<boolean>(false);
 export const formDataStore = writable<Object>({});
 export const formValidity = writable<boolean>(false);

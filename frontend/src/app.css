@@ -59,7 +59,8 @@ html {
     background-color: var(--background);
 }
 
-#app {
+/* Targets the Svelte application */
+#root>div {
     display: grid;
     grid-template-rows: var(--header-height) 1fr;
 }

@@ -36,6 +36,7 @@
 
     $: active && updateDataStore();
     $: if (active && $checkValidity) {
+        console.log(form);
         if (form.checkValidity()) {
             formValidity.set(true);
             loading.set(true);

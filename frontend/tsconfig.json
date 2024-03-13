@@ -12,14 +12,15 @@
         * of JS in `.svelte` files.
         */
         "allowJs": true,
-        "checkJs": true,
-        "isolatedModules": true
+        "checkJs": false,
+        "isolatedModules": true,
+        "outDir": "dist"
     },
     "include": [
-        "src/**/*.ts",
         "src/**/*.js",
+        "src/**/*.ts",
         "src/**/*.svelte"
-    ],
+, "src/main.tsx"    ],
     "references": [
         {
             "path": "./tsconfig.node.json"
