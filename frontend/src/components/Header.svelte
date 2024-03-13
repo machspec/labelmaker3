@@ -20,6 +20,7 @@
         padding: 0.5rem 1rem;
         height: 100%;
         background-color: var(--accent);
+        z-index: 99;
     }
 
     img {
