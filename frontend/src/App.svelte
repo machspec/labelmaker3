@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { appState, activeForm, loading } from "./stores.js";
+    import { appState, activeForm, loading, msal } from "./stores.js";
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
     import FormatSelector from "./components/FormatSelector.svelte";

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Login from "./Login.svelte";
     export let state: { app_title?: string; app_version?: string };
 </script>
 
@@ -10,6 +11,8 @@
             {state.app_version}
         </span>
     </h1>
+
+    <Login />
 </header>
 
 <style>
