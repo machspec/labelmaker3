@@ -24,7 +24,7 @@
      * @param input Value to be added to the list.
      * @param clear Whether to clear the input after adding the value.
      */
-    const addSN = (input: string = serialNumber, clear = true) => {
+    const addSN = (input: string = serialNumber, clear = false) => {
         if (input === "") return;
 
         // Prevent duplicates
