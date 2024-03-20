@@ -2,6 +2,7 @@
 extern crate rocket;
 
 use base64::Engine;
+use dotenv;
 use rand::Rng;
 use rocket::fs::{relative, FileServer};
 use std::sync::{Arc, Mutex};
@@ -24,6 +25,12 @@ fn generate_secret_key() -> String {
 
 #[rocket::launch]
 async fn rocket() -> _ {
+    dotenv::dotenv().ok();
+    let auth_data = app::AuthData {
+        client_id: dotenv::var("CLIENT_ID").expect("Client ID undefined"),
+        tenant_id: dotenv::var("TENANT_ID").expect("Tenant ID undefined"),
+    };
+
     let config = app::Config::load();
     let state = app::State::new(APP_TITLE);
     let figment = rocket::Config::figment()
@@ -32,6 +39,7 @@ async fn rocket() -> _ {
         .merge((SECRET_KEY, generate_secret_key()));
 
     rocket::custom(figment)
+        .manage(Arc::new(auth_data))
         .manage(Arc::new(Mutex::new(state)))
         .mount("/", FileServer::from(relative!["../frontend/dist"]))
         .mount("/api", app::routes())

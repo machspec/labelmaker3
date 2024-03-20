@@ -13,6 +13,12 @@ pub fn routes() -> Vec<rocket::Route> {
 }
 
 #[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct AuthData {
+    pub client_id: String,
+    pub tenant_id: String,
+}
+
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub enum Data {
     String(String),
     Number(i32),
