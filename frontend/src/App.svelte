@@ -111,18 +111,6 @@
         border-bottom: var(--bd);
     }
 
-    :global(button) {
-        border: none;
-        color: var(--text);
-        font-size: 1rem;
-        cursor: pointer;
-        background-color: var(--accent);
-    }
-
-    :global(button:hover) {
-        background-color: var(--accent-hover);
-    }
-
     :global(h1) {
         font-size: 2.5rem;
     }

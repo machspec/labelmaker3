@@ -63,3 +63,20 @@ html {
     display: grid;
     grid-template-rows: var(--header-height) 1fr;
 }
+
+button {
+    border: none;
+    color: var(--text);
+    font-size: 1rem;
+    padding: 0.25rem 1rem;
+    background-color: var(--accent);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+button:disabled {
+    opacity: .5;
+}

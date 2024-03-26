@@ -1,14 +1,18 @@
 <script lang="ts">
+    import GenericLine from "./GenericLine.svelte";
+    import { onMount } from "svelte";
     import { clearForm } from "../formHelpers";
 
     export let active: boolean = false;
 
-    let fieldCount = 1;
+    let rowCount = 0;
     let form: HTMLFormElement;
 
+    const addRow = () => rowCount++;
     const updateDataStore = () => {};
 
-    $: rows = new Array(fieldCount);
+    // Generate five rows on mount.
+    onMount(() => [...Array(5)].map(() => addRow()));
 </script>
 
 <span class="container {active ? 'active' : ''}">
@@ -18,17 +22,13 @@
             <p>Field</p>
             <p>Value</p>
         </span>
-        {#each rows as rowIndex}
-            <input name="row-{rowIndex}" />
-            <input
-                required
-                type="text"
-                id="row-{rowIndex}"
-                name="row-{rowIndex}"
-            />
+
+        {#each [...Array(rowCount)] as _}
+            <GenericLine />
         {/each}
-        <button class="add-field">&plus;</button>
+
         <div class="form-options">
+            <button on:click|preventDefault={addRow}>&plus; Row</button>
             <button class="clear" on:click={() => clearForm(form)}>
                 Clear
             </button>
@@ -45,10 +45,11 @@
 
     form {
         display: grid;
-        grid-template-columns: 8ch 1fr;
+        grid-template-columns: 10ch 1fr auto auto;
         gap: 0.5rem;
         padding: 0 10%;
         width: 100%;
+        max-width: 900px;
     }
 
     .add-field {
@@ -66,9 +67,5 @@
         grid-column: 1 / -1;
         text-align: center;
         border-bottom: var(--bd);
-    }
-
-    form > input {
-        min-width: 8ch !important;
     }
 </style>
