@@ -2,24 +2,25 @@
     let container: HTMLSpanElement;
     let fields: Array<{ [key: string]: string }> = [{ "": "" }];
 
-    const deleteLine = () => {
-        container.parentNode!.removeChild(container);
-    };
+    /** Remove the line and all its fields. */
+    const deleteLine = () => container.parentNode!.removeChild(container);
 
+    /** Run the given function and update the list of fields. */
     const update = (fn: Function, ...args: any[]) => {
         fn(...args);
         fields = [...fields];
     };
 
-    const add = (index: number) => {
-        fields.splice(index + 1, 0, { "": "" });
-    };
+    /** Add a new field to the line. */
+    const add = (index: number) => fields.splice(index + 1, 0, { "": "" });
 
+    /** Update the name of a field. */
     const name = (index: number, e: Event) => {
         const target = e.target as HTMLInputElement;
         fields[index] = { [target.value]: Object.values(fields[index])[0] };
     };
 
+    /** Update the value of a field. */
     const value = (index: number, e: Event) => {
         const target = e.target as HTMLInputElement;
         fields[index] = {
@@ -28,6 +29,7 @@
         };
     };
 
+    /** Remove a field from the line. */
     const remove = (index: number) => fields.splice(index, 1);
 </script>
 
