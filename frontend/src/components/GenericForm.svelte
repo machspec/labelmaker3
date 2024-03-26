@@ -2,6 +2,7 @@
     import GenericLine from "./GenericLine.svelte";
     import { onMount } from "svelte";
     import { clearForm } from "../formHelpers";
+    import { formDataStore } from "../stores";
 
     export let active: boolean = false;
 
@@ -9,7 +10,25 @@
     let form: HTMLFormElement;
 
     const addRow = () => rowCount++;
-    const updateDataStore = () => {};
+    const updateDataStore = () => {
+        let data: Record<string, string>[] = [];
+        let containers = form.querySelectorAll(".container");
+
+        containers.forEach((container) => {
+            let fields = container.querySelectorAll("input");
+            let row: Record<string, string> = {};
+
+            fields.forEach((field) => {
+                row[field.name] = field.value;
+            });
+
+            data.push(row);
+        });
+
+        formDataStore.update(() => {
+            return { rows: data };
+        });
+    };
 
     // Generate five rows on mount.
     onMount(() => [...Array(5)].map(() => addRow()));
