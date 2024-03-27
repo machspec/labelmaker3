@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { labelFormats } from "./companies";
     import FormatSelector from "./components/FormatSelector.svelte";
+    import GenericForm from "./components/GenericForm.svelte";
     import Header from "./components/Header.svelte";
     import LabelForm from "./components/LabelForm.svelte";
     import LoadingOverlay from "./components/LoadingOverlay.svelte";
@@ -11,9 +12,10 @@
 
     const NETWORK_ERROR_MESSAGE = "Network error. Please try again later.";
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
-    const NO_FORMAT_SELECTED_MESSAGE = "No label format selected.";
 
     let active: number | null;
+    let selectedForm: GenericForm | LabelForm;
+
     activeForm.subscribe((value) => (active = value));
 
     onMount(async () => {
@@ -50,6 +52,17 @@
 
 <main>
     <FormatSelector>
+        <!-- TODO: Fix these -->
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+        <h2
+            data-item="generic"
+            on:click={() => activeForm.update(() => null)}
+            class={active === null ? "active" : ""}
+        >
+            &lsqb; Generic &rsqb;
+        </h2>
+
         {#each labelFormats as labelFormat, index}
             <!-- TODO: Fix these -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -66,17 +79,21 @@
 
     <div class="container">
         {#if active === null}
-            <h2 class="hero">{NO_FORMAT_SELECTED_MESSAGE}</h2>
+            <GenericForm active={active === null} bind:this={selectedForm} />
         {/if}
 
         {#each labelFormats as format, itemIndex}
-            <LabelForm {format} active={itemIndex === active} />
+            {#if itemIndex === active}
+                <LabelForm
+                    {format}
+                    active={itemIndex === active}
+                    bind:this={selectedForm}
+                />
+            {/if}
         {/each}
 
-        {#if active !== null}
-            <SerialNumberInput />
-            <PrintingOptions />
-        {/if}
+        <SerialNumberInput />
+        <PrintingOptions {selectedForm} />
     </div>
 </main>
 
@@ -100,35 +117,8 @@
         padding: 1rem;
     }
 
-    .container h2 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    }
-
-    .hero {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-wrap: nowrap;
-    }
-
     .container > :global(.active) {
         border-bottom: var(--bd);
-    }
-
-    :global(button) {
-        border: none;
-        color: var(--text);
-        font-size: 1rem;
-        cursor: pointer;
-        background-color: var(--accent);
-    }
-
-    :global(button:hover) {
-        background-color: var(--accent-hover);
     }
 
     :global(h1) {
