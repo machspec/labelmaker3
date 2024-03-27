@@ -1,6 +1,15 @@
 <script lang="ts">
+    export const clearFields = () => {
+        Object.entries(fields).forEach(([key, value]) => {
+            let emptyFields: Array<{ [key: string]: string }> = [];
+            fields.forEach((_) => emptyFields.push({ "": "" }));
+            fields = emptyFields;
+        });
+    };
+
+    export let fields: Array<{ [key: string]: string }> = [{ "": "" }];
+
     let container: HTMLSpanElement;
-    let fields: Array<{ [key: string]: string }> = [{ "": "" }];
 
     /** Remove the line and all its fields. */
     const deleteLine = () => container.parentNode!.removeChild(container);
@@ -66,9 +75,9 @@
             </button>
         {/if}
 
-        <button on:click|preventDefault={() => update(add, index)}
-            >&plus;</button
-        >
+        <button on:click|preventDefault={() => update(add, index)}>
+            &plus;
+        </button>
     {/each}
 </span>
 

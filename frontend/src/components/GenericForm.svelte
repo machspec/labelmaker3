@@ -1,20 +1,26 @@
 <script lang="ts">
-    import GenericLine from "./GenericLine.svelte";
     import { onMount } from "svelte";
-    import { clearForm } from "../formHelpers";
     import {
         checkValidity,
         formDataStore,
         formValidity,
         loading,
     } from "../stores";
+    import GenericLine from "./GenericLine.svelte";
+    import { clearForm } from "../formHelpers";
 
     export let active: boolean = false;
 
-    let rowCount = 0;
     let form: HTMLFormElement;
+    let lines: GenericLine[] = [];
+    let rowCount = 0;
 
     const addRow = () => rowCount++;
+
+    const clearFields = () => {
+        clearForm(form);
+        lines.forEach((line) => line.clearFields());
+    };
 
     export const updateDataStore = () => {
         let data: Record<string, string>[] = [];
@@ -72,14 +78,12 @@
 
         {#each [...Array(rowCount)] as _, rowNumber}
             <p class="row-num">Row {rowNumber + 1}</p>
-            <GenericLine />
+            <GenericLine bind:this={lines[rowNumber]} />
         {/each}
 
         <div class="form-options">
             <button on:click|preventDefault={addRow}>&plus; Row</button>
-            <button class="clear" on:click={() => clearForm(form)}>
-                Clear
-            </button>
+            <button class="clear" on:click={clearFields}> Clear </button>
         </div>
     </form>
 </span>
