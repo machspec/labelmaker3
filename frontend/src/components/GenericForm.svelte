@@ -2,7 +2,12 @@
     import GenericLine from "./GenericLine.svelte";
     import { onMount } from "svelte";
     import { clearForm } from "../formHelpers";
-    import { formDataStore, formValidity } from "../stores";
+    import {
+        checkValidity,
+        formDataStore,
+        formValidity,
+        loading,
+    } from "../stores";
 
     export let active: boolean = false;
 
@@ -10,7 +15,8 @@
     let form: HTMLFormElement;
 
     const addRow = () => rowCount++;
-    const updateDataStore = () => {
+
+    export const updateDataStore = () => {
         let data: Record<string, string>[] = [];
         let containers = form.querySelectorAll(".container");
 
@@ -18,20 +24,15 @@
             let fields = container.querySelectorAll("input");
             let row: Record<string, string> = {};
 
-            // Extract the name and value from each field.
+            // Sort names and values into separate arrays.
             const names: Record<string, string> = {};
             const values: Record<string, string> = {};
-
             fields.forEach((field) => {
-                const index = field.name.split("-")[1];
-                if (field.name.includes("name")) {
-                    names[index] = field.value;
-                } else {
-                    values[index] = field.value;
-                }
+                const [_, index, input] = field.name.split("-");
+                (input === "name" ? names : values)[index] = field.value;
             });
 
-            //TODO: Check empty input.
+            // TODO: Check empty input.
             // Combine the names and values into a single object.
             Object.keys(names).forEach((key) => {
                 row[names[key]] = values[key];
@@ -46,13 +47,24 @@
         });
     };
 
-    // Generate five rows on mount.
-    onMount(() => [...Array(5)].map(() => addRow()));
+    onMount(() => addRow());
+
+    $: if (active && $checkValidity) {
+        if (form.checkValidity()) {
+            formValidity.set(true);
+            loading.set(true);
+        } else {
+            formValidity.set(false);
+        }
+
+        form.reportValidity();
+        checkValidity.set(false);
+    }
 </script>
 
 <span class="container {active ? 'active' : ''}">
     <h1>Generic Label</h1>
-    <form bind:this={form} on:input={updateDataStore}>
+    <form bind:this={form}>
         <span class="headers">
             <p>Field</p>
             <p>Value</p>

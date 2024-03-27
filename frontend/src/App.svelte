@@ -14,6 +14,8 @@
     const STATE_FETCH_FAIL_MESSAGE = "Failed to fetch application state.";
 
     let active: number | null;
+    let selectedForm: GenericForm | LabelForm;
+
     activeForm.subscribe((value) => (active = value));
 
     onMount(async () => {
@@ -76,14 +78,22 @@
     </FormatSelector>
 
     <div class="container">
-        <GenericForm active={active === null} />
+        {#if active === null}
+            <GenericForm active={active === null} bind:this={selectedForm} />
+        {/if}
 
         {#each labelFormats as format, itemIndex}
-            <LabelForm {format} active={itemIndex === active} />
+            {#if itemIndex === active}
+                <LabelForm
+                    {format}
+                    active={itemIndex === active}
+                    bind:this={selectedForm}
+                />
+            {/if}
         {/each}
 
         <SerialNumberInput />
-        <PrintingOptions />
+        <PrintingOptions {selectedForm} />
     </div>
 </main>
 

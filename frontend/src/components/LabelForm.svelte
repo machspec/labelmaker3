@@ -13,7 +13,7 @@
     let form: HTMLFormElement;
     let rows: object[] = new Array(format.length);
 
-    const updateDataStore = () => {
+    export const updateDataStore = () => {
         if (!active) return;
 
         // Group form data by row defined in format
@@ -29,7 +29,6 @@
         });
     };
 
-    $: active && updateDataStore();
     $: if (active && $checkValidity) {
         if (form.checkValidity()) {
             formValidity.set(true);
@@ -45,7 +44,7 @@
 
 <span class="container {active ? 'active' : ''}">
     <h1>Label Fields</h1>
-    <form bind:this={form} on:input={updateDataStore}>
+    <form bind:this={form}>
         {#each format.rows as row, index}
             {#each row as field}
                 <label for={field}>{field}</label>
