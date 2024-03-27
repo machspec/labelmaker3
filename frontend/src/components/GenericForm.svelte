@@ -2,7 +2,7 @@
     import GenericLine from "./GenericLine.svelte";
     import { onMount } from "svelte";
     import { clearForm } from "../formHelpers";
-    import { formDataStore } from "../stores";
+    import { formDataStore, formValidity } from "../stores";
 
     export let active: boolean = false;
 
@@ -18,14 +18,30 @@
             let fields = container.querySelectorAll("input");
             let row: Record<string, string> = {};
 
+            // Extract the name and value from each field.
+            const names: Record<string, string> = {};
+            const values: Record<string, string> = {};
+
             fields.forEach((field) => {
-                row[field.name] = field.value;
+                const index = field.name.split("-")[1];
+                if (field.name.includes("name")) {
+                    names[index] = field.value;
+                } else {
+                    values[index] = field.value;
+                }
+            });
+
+            //TODO: Check empty input.
+            // Combine the names and values into a single object.
+            Object.keys(names).forEach((key) => {
+                row[names[key]] = values[key];
             });
 
             data.push(row);
         });
 
         formDataStore.update(() => {
+            formValidity.set(true);
             return { rows: data };
         });
     };
