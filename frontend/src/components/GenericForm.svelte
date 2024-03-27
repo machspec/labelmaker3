@@ -2,7 +2,12 @@
     import GenericLine from "./GenericLine.svelte";
     import { onMount } from "svelte";
     import { clearForm } from "../formHelpers";
-    import { formDataStore } from "../stores";
+    import {
+        checkValidity,
+        formDataStore,
+        formValidity,
+        loading,
+    } from "../stores";
 
     export let active: boolean = false;
 
@@ -10,7 +15,8 @@
     let form: HTMLFormElement;
 
     const addRow = () => rowCount++;
-    const updateDataStore = () => {
+
+    export const updateDataStore = () => {
         let data: Record<string, string>[] = [];
         let containers = form.querySelectorAll(".container");
 
@@ -18,31 +24,54 @@
             let fields = container.querySelectorAll("input");
             let row: Record<string, string> = {};
 
+            // Sort names and values into separate arrays.
+            const names: Record<string, string> = {};
+            const values: Record<string, string> = {};
             fields.forEach((field) => {
-                row[field.name] = field.value;
+                const [_, index, input] = field.name.split("-");
+                (input === "name" ? names : values)[index] = field.value;
+            });
+
+            // TODO: Check empty input.
+            // Combine the names and values into a single object.
+            Object.keys(names).forEach((key) => {
+                row[names[key]] = values[key];
             });
 
             data.push(row);
         });
 
         formDataStore.update(() => {
+            formValidity.set(true);
             return { rows: data };
         });
     };
 
-    // Generate five rows on mount.
-    onMount(() => [...Array(5)].map(() => addRow()));
+    onMount(() => addRow());
+
+    $: if (active && $checkValidity) {
+        if (form.checkValidity()) {
+            formValidity.set(true);
+            loading.set(true);
+        } else {
+            formValidity.set(false);
+        }
+
+        form.reportValidity();
+        checkValidity.set(false);
+    }
 </script>
 
 <span class="container {active ? 'active' : ''}">
     <h1>Generic Label</h1>
-    <form bind:this={form} on:input={updateDataStore}>
+    <form bind:this={form}>
         <span class="headers">
             <p>Field</p>
             <p>Value</p>
         </span>
 
-        {#each [...Array(rowCount)] as _}
+        {#each [...Array(rowCount)] as _, rowNumber}
+            <p class="row-num">Row {rowNumber + 1}</p>
             <GenericLine />
         {/each}
 
@@ -86,5 +115,10 @@
         grid-column: 1 / -1;
         text-align: center;
         border-bottom: var(--bd);
+    }
+
+    .row-num {
+        grid-column: 1/-1;
+        font-size: 1rem;
     }
 </style>

@@ -6,6 +6,10 @@
         loading,
         serialNumberList,
     } from "../stores";
+    import GenericForm from "./GenericForm.svelte";
+    import LabelForm from "./LabelForm.svelte";
+
+    export let selectedForm: GenericForm | LabelForm;
 
     let printMultiple: boolean = false;
     let specifyQty: boolean = false;
@@ -22,6 +26,7 @@
             return;
         }
 
+        selectedForm.updateDataStore();
         formDataStore.update((data) => {
             return {
                 ...data,

@@ -76,7 +76,7 @@
         // Matches the following formats (prefix is optional):
         // 1. "ABC123" => ["ABC", "123"]
         // 2. "ABC-123" => ["ABC-", "123"]
-        const match = input!.match(/^([a-zA-Z-]*)(\d+$)/);
+        const match = input.match(/(.*[^\d])(\d+$)/);
 
         if (!match) return;
 
