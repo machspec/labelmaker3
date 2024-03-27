@@ -70,7 +70,8 @@
             <p>Value</p>
         </span>
 
-        {#each [...Array(rowCount)] as _}
+        {#each [...Array(rowCount)] as _, rowNumber}
+            <p class="row-num">Row {rowNumber + 1}</p>
             <GenericLine />
         {/each}
 
@@ -114,5 +115,10 @@
         grid-column: 1 / -1;
         text-align: center;
         border-bottom: var(--bd);
+    }
+
+    .row-num {
+        grid-column: 1/-1;
+        font-size: 1rem;
     }
 </style>
