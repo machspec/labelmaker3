@@ -76,11 +76,15 @@
         // Matches the following formats (prefix is optional):
         // 1. "ABC123" => ["ABC", "123"]
         // 2. "ABC-123" => ["ABC-", "123"]
-        const match = input.match(/(.*[^\d])(\d+$)/);
+        const match = input.match(/(.*[^\d])?(\d+$)/);
 
         if (!match) return;
 
-        const [_, prefix, num] = match;
+        let [_, prefix, num] = match;
+
+        // Ensure prefix is not `undefined`
+        prefix ?? (prefix = "");
+
         const incremented = (parseInt(num, 10) + 1)
             .toString()
             .padStart(num.length, "0");
